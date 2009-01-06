@@ -4,6 +4,9 @@ import hudson.model.ManagementLink;
 
 import java.util.logging.Logger;
 
+import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.StaplerResponse;
+
 public class BackupLink extends ManagementLink {
 	private final static Logger LOGGER = Logger.getLogger(BackupLink.class
 			.getName());
@@ -27,4 +30,8 @@ public class BackupLink extends ManagementLink {
 		return Messages.description();
 	}
 
+	public void doBackup(StaplerRequest req, StaplerResponse rsp) {
+		LOGGER.info("Backuping config files....");
+	}
+	
 }
