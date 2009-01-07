@@ -6,11 +6,17 @@
             <img src="${it.iconFileName}" alt=""/>
             ${it.displayName}
           </h1>
-		<f:form method="post" action="backup">
+		<f:form method="post" action="doBackup">
     	    <f:section title="${%backup.title}">
+    	    	<f:entry title="${%root.directory.title}">
+    	    		${it.rootDirectory}
+    	    	</f:entry>
     	    	<f:entry>
 					<f:submit value="${%backup.launch}"/>
 				</f:entry>
+			</f:section>
+			<br/>
+			<f:section title="${%restore.title}">
 			</f:section>
 		</f:form>
 	</l:main-panel>

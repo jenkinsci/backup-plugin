@@ -1,7 +1,9 @@
 package org.jvnet.hudson.plugins.backup;
 
+import hudson.model.Hudson;
 import hudson.model.ManagementLink;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.kohsuke.stapler.StaplerRequest;
@@ -30,8 +32,13 @@ public class BackupLink extends ManagementLink {
 		return Messages.description();
 	}
 
-	public void doBackup(StaplerRequest req, StaplerResponse rsp) {
+	public void doDoBackup(StaplerRequest req, StaplerResponse rsp) throws IOException {
 		LOGGER.info("Backuping config files....");
+		rsp.sendRedirect("backup");
+	}
+	
+	public String getRootDirectory() {
+		return Hudson.getInstance().getRootDir().getAbsolutePath();
 	}
 	
 }
