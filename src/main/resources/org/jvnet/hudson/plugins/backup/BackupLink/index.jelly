@@ -11,12 +11,15 @@
     	    	<f:entry title="${%root.directory.title}">
     	    		${it.rootDirectory}
     	    	</f:entry>
+    	    	<f:entry title="${%backup.filename.title}">
+    	    		<f:textbox name="fileName"/>
+    	    	</f:entry>
     	    	<f:entry>
 					<f:submit value="${%backup.launch}"/>
 				</f:entry>
 			</f:section>
 			<br/>
-			<f:section title="${%restore.title}">
+			<f:section title="${%restore.title}" method="doBackup">
 			</f:section>
 		</f:form>
 	</l:main-panel>

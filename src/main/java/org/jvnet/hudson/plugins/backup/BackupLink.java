@@ -3,9 +3,13 @@ package org.jvnet.hudson.plugins.backup;
 import hudson.model.Hudson;
 import hudson.model.ManagementLink;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
+import org.jvnet.hudson.plugins.backup.utils.BackupTask;
+import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
 
@@ -32,8 +36,19 @@ public class BackupLink extends ManagementLink {
 		return Messages.description();
 	}
 
-	public void doDoBackup(StaplerRequest req, StaplerResponse rsp) throws IOException {
-		LOGGER.info("Backuping config files....");
+	public void doDoBackup(StaplerRequest req, StaplerResponse rsp, @QueryParameter("fileName") final String fileName) throws IOException {
+		LOGGER.info("Backuping hudson files into " + fileName + "....");
+		
+		// Creating and configuring task
+		BackupTask backupTask = new BackupTask();
+		backupTask.setLogFileName(new File(Hudson.getInstance().getRootDir().getAbsolutePath(), "/backup.log").getAbsolutePath());
+		backupTask.setTargetFileName(fileName);
+		
+		// Launching the task
+		Thread thread = Executors.defaultThreadFactory().newThread(backupTask);
+		thread.start();
+		
+		// redirect to observation page
 		rsp.sendRedirect("backup");
 	}
 	
