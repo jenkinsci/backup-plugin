@@ -12,6 +12,7 @@ import org.jvnet.hudson.plugins.backup.utils.BackupTask;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
+import org.kohsuke.stapler.framework.io.LargeText;
 
 public class BackupLink extends ManagementLink {
 	private final static Logger LOGGER = Logger.getLogger(BackupLink.class
@@ -41,7 +42,7 @@ public class BackupLink extends ManagementLink {
 		
 		// Creating and configuring task
 		BackupTask backupTask = new BackupTask();
-		backupTask.setLogFileName(new File(Hudson.getInstance().getRootDir().getAbsolutePath(), "/backup.log").getAbsolutePath());
+		backupTask.setLogFileName(getLogFile().getAbsolutePath());
 		backupTask.setTargetFileName(fileName);
 		
 		// Launching the task
@@ -52,8 +53,15 @@ public class BackupLink extends ManagementLink {
 		rsp.sendRedirect("backup");
 	}
 	
+	public void doProgressiveLog(StaplerRequest req, StaplerResponse rsp) throws IOException {
+		new LargeText(getLogFile(),false).doProgressText(req,rsp);
+	}
+	
 	public String getRootDirectory() {
 		return Hudson.getInstance().getRootDir().getAbsolutePath();
 	}
-	
+
+	private File getLogFile() {
+		return new File(Hudson.getInstance().getRootDir().getAbsolutePath(), "/backup.log");
+	}
 }
