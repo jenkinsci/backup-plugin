@@ -18,6 +18,13 @@ public class BackupLink extends ManagementLink {
 	private final static Logger LOGGER = Logger.getLogger(BackupLink.class
 			.getName());
 
+	private final BackupTask backupTask;
+
+	public BackupLink() {
+		// Creating backup task
+		backupTask = new BackupTask();
+	}
+
 	@Override
 	public String getIconFileName() {
 		return "/plugin/backup/images/backup-48x48.png";
@@ -31,37 +38,42 @@ public class BackupLink extends ManagementLink {
 	public String getDisplayName() {
 		return Messages.display_name();
 	}
-	
+
 	@Override
 	public String getDescription() {
 		return Messages.description();
 	}
 
-	public void doDoBackup(StaplerRequest req, StaplerResponse rsp, @QueryParameter("fileName") final String fileName) throws IOException {
+	public void doDoBackup(StaplerRequest req, StaplerResponse rsp,
+			@QueryParameter("fileName") final String fileName)
+			throws IOException {
 		LOGGER.info("Backuping hudson files into " + fileName + "....");
-		
-		// Creating and configuring task
-		BackupTask backupTask = new BackupTask();
+
+		// configuring backup configuring
 		backupTask.setLogFileName(getLogFile().getAbsolutePath());
 		backupTask.setTargetFileName(fileName);
-		
+		backupTask.setConfigurationDirectory(getRootDirectory());
+
 		// Launching the task
 		Thread thread = Executors.defaultThreadFactory().newThread(backupTask);
 		thread.start();
-		
+
 		// redirect to observation page
 		rsp.sendRedirect("backup");
 	}
-	
-	public void doProgressiveLog(StaplerRequest req, StaplerResponse rsp) throws IOException {
-		new LargeText(getLogFile(),false).doProgressText(req,rsp);
+
+	public void doProgressiveLog(StaplerRequest req, StaplerResponse rsp)
+			throws IOException {
+		new LargeText(getLogFile(), backupTask.isFinished()).doProgressText(
+				req, rsp);
 	}
-	
+
 	public String getRootDirectory() {
 		return Hudson.getInstance().getRootDir().getAbsolutePath();
 	}
 
 	private File getLogFile() {
-		return new File(Hudson.getInstance().getRootDir().getAbsolutePath(), "/backup.log");
+		return new File(Hudson.getInstance().getRootDir().getAbsolutePath(),
+				"/backup.log");
 	}
 }
