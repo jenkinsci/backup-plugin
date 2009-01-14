@@ -13,7 +13,15 @@
 	<name>Backup plugin</name>
 	<description>Backup and restore Hudson configuration files
 	</description>
-
+	
+	<dependencies>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.4</version>
+		</dependency>
+	</dependencies>
+	
 	<build>
 		<!--
 			Since new versions need to overwrite old versions, it's better not to
