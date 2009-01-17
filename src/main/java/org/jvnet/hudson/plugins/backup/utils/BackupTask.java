@@ -65,7 +65,7 @@ public class BackupTask implements Runnable {
 		}
 		
 
-		Date endDate = new Date();
+		endDate = new Date();
 		logFile.println("Backup end at " + getTimestamp(endDate));
 		logFile.flush();
 		logFile.close();

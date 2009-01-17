@@ -2,7 +2,6 @@ package org.jvnet.hudson.plugins.backup;
 
 import hudson.Plugin;
 import hudson.model.ManagementLink;
-import hudson.tasks.BuildStep;
 
 /**
  * Entry point of the Backup plugin
