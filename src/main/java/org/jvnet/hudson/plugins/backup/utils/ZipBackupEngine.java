@@ -21,7 +21,7 @@ public class ZipBackupEngine extends DirectoryWalker {
 	private File source;
 	
 	/**
-	 * the lengt of the source string, to speed up walk
+	 * the length of the source string, to speed up walk
 	 */
 	private int sourceLength;
 	private ZipOutputStream target;

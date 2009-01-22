@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
+import java.math.BigDecimal;
 
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.NameFileFilter;
@@ -67,6 +68,12 @@ public class BackupTask implements Runnable {
 
 		endDate = new Date();
 		logFile.println("Backup end at " + getTimestamp(endDate));
+        BigDecimal delay = new BigDecimal(
+                endDate.getTime() - startDate.getTime());
+        delay = delay.setScale(2, BigDecimal.ROUND_HALF_UP);
+        delay = delay.divide(new BigDecimal("1000"));
+
+        logFile.println("[" + delay.toPlainString() + "s]");
 		logFile.flush();
 		logFile.close();
 		finished = true;
