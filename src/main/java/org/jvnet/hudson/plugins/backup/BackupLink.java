@@ -8,10 +8,12 @@ import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
+import javax.servlet.ServletException;
+
 import org.jvnet.hudson.plugins.backup.utils.BackupTask;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
-import org.kohsuke.stapler.StaplerResponse;                   
+import org.kohsuke.stapler.StaplerResponse;
 import org.kohsuke.stapler.framework.io.LargeText;
 
 public class BackupLink extends ManagementLink {
@@ -46,7 +48,7 @@ public class BackupLink extends ManagementLink {
 
 	public void doDoBackup(StaplerRequest req, StaplerResponse rsp,
 			@QueryParameter("fileName") final String fileName)
-			throws IOException {
+			throws IOException, ServletException {
 		LOGGER.info("Backuping hudson files into " + fileName + "....");
 
 		// configuring backup configuring
