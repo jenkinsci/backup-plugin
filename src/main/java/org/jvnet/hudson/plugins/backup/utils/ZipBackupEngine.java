@@ -32,10 +32,6 @@ public class ZipBackupEngine extends DirectoryWalker {
 		this.logFile = logFile;
 		this.source = new File(sourceDirectory);
 		this.sourceLength = sourceDirectory.length();
-
-		if (!targetName.endsWith(".zip")) {
-			targetName = targetName + ".zip";
-		}
 		
 		File targetFile = new File(targetName);
 		logFile.println("Full backup file name : " + targetFile.getAbsolutePath());

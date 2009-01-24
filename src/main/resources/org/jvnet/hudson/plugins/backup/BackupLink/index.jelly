@@ -12,7 +12,7 @@
     	    		${it.rootDirectory}
     	    	</f:entry>
     	    	<f:entry title="${%backup.filename.title}" help="${rootURL}/plugin/backup/backup_destination.html">
-    	    		<f:textbox name="fileName"/>
+    	    		<f:textbox name="fileName" checkUrl="'fileNameCheck?fileName='+escape(this.value)"/>
     	    	</f:entry>
     	    	<f:entry>
 					<f:submit value="${%backup.launch}"/>
