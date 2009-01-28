@@ -1,6 +1,6 @@
-- destination verification
 - backup element choice 
 	- include jobs's workspaces or not
 	- include builds history or not
 	- ...
 - backup configuration persistent
+- add an option to render backup verbose or not (output the list of file, ...)
