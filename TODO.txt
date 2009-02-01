@@ -3,4 +3,4 @@
 	- include builds history or not
 	- ...
 - backup configuration persistent
-- add an option to render backup verbose or not (output the list of file, ...)
+- Add help files translations

@@ -86,7 +86,7 @@ public class BackupLink extends ManagementLink {
 	}
 
 	public void doDoBackup(StaplerRequest req, StaplerResponse rsp,
-			@QueryParameter("fileName") final String fileName)
+			@QueryParameter("fileName") final String fileName, @QueryParameter("verbose") final boolean verbose)
 			throws IOException, ServletException {
 		Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
 		LOGGER.info("Backuping hudson files into " + fileName + "....");
@@ -98,6 +98,7 @@ public class BackupLink extends ManagementLink {
 		}
 
 		// configuring backup configuring
+		backupTask.setVerbose(verbose);
 		backupTask.setLogFileName(getLogFile().getAbsolutePath());
 		backupTask.setTargetFileName(fileName);
 		backupTask.setConfigurationDirectory(getRootDirectory());

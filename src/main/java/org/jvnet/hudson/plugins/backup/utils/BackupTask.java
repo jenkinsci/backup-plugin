@@ -23,60 +23,59 @@ public class BackupTask implements Runnable {
 	private final static Logger LOGGER = Logger.getLogger(BackupTask.class
 			.getName());
 
+	private boolean verbose;
 	private String logFileName;
 	private String targetFileName;
 	private String configurationDirectory;
 
 	private List<String> exclusions = new ArrayList<String>();
-	
-	private PrintWriter logFile;
+
+	private BackupLogger logger;
 
 	private Date startDate;
 	private Date endDate;
-	
+
 	private boolean finished = false;
-	
+
 	public BackupTask() {
 		exclusions.addAll(getDefaultsExclusions());
 	}
-	
+
 	public void run() {
 		assert (logFileName != null);
 		assert (targetFileName != null);
 
 		startDate = new Date();
-
 		try {
-			logFile = new PrintWriter(logFileName);
+			logger = new BackupLogger(logFileName, verbose);
 		} catch (IOException e) {
 			LOGGER.severe("Unable to open log file for writing : "
 					+ logFileName);
 			return;
 		}
 
-		logFile.println("Backup started at " + getTimestamp(startDate));
+		logger.info("Backup started at " + getTimestamp(startDate));
 
 		FileFilter filter = createFileFilter(exclusions);
-		
+
 		try {
-			ZipBackupEngine backupEngine = new ZipBackupEngine(logFile, configurationDirectory, targetFileName, filter);
+			ZipBackupEngine backupEngine = new ZipBackupEngine(logger,
+					configurationDirectory, targetFileName, filter);
 			backupEngine.doBackup();
 		} catch (IOException e) {
-			e.printStackTrace(logFile);
+			e.printStackTrace(logger.getWriter());
 		}
-		
 
 		endDate = new Date();
-		logFile.println("Backup end at " + getTimestamp(endDate));
-        BigDecimal delay = new BigDecimal(
-                endDate.getTime() - startDate.getTime());
-        delay = delay.setScale(2, BigDecimal.ROUND_HALF_UP);
-        delay = delay.divide(new BigDecimal("1000"));
+		logger.info("Backup end at " + getTimestamp(endDate));
+		BigDecimal delay = new BigDecimal(endDate.getTime()
+				- startDate.getTime());
+		delay = delay.setScale(2, BigDecimal.ROUND_HALF_UP);
+		delay = delay.divide(new BigDecimal("1000"));
 
-        logFile.println("[" + delay.toPlainString() + "s]");
-		logFile.flush();
-		logFile.close();
+		logger.info("[" + delay.toPlainString() + "s]");
 		finished = true;
+		logger.close();
 	}
 
 	public void setLogFileName(String logFileName) {
@@ -90,33 +89,37 @@ public class BackupTask implements Runnable {
 	public void setConfigurationDirectory(String configurationDirectory) {
 		this.configurationDirectory = configurationDirectory;
 	}
-	
-	
+
 	public boolean isFinished() {
 		return finished;
 	}
-	
+
+	public void setVerbose(boolean verbose) {
+		this.verbose = verbose;
+	}
+
+	public List<String> getDefaultsExclusions() {
+		List<String> defaultExclusion = new ArrayList<String>();
+
+		defaultExclusion.add("workspace");
+
+		return defaultExclusion;
+	}
+
 	/**
 	 * Gets the formatted current time stamp.
 	 */
 	private static String getTimestamp(Date date) {
 		return String.format("[%1$tD %1$tT]", date);
 	}
-	
-	public List<String> getDefaultsExclusions() {
-		List<String> defaultExclusion = new ArrayList<String>();
-		
-		defaultExclusion.add("workspace");
-		
-		return defaultExclusion;
-	}
-	
-	private FileFilter createFileFilter(List<String> exclusions) {		
+
+	private FileFilter createFileFilter(List<String> exclusions) {
 		// creating the filter
-		IOFileFilter filter = new NameFileFilter(exclusions.toArray(new String[] {})); 
+		IOFileFilter filter = new NameFileFilter(exclusions
+				.toArray(new String[] {}));
 		// revert it because they are exclusions
 		filter = new NotFileFilter(filter);
-		
+
 		return filter;
 	}
 }

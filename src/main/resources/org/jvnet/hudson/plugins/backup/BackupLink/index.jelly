@@ -14,6 +14,9 @@
     	    	<f:entry title="${%backup.filename.title}" help="${rootURL}/plugin/backup/backup_destination.html">
     	    		<f:textbox name="fileName" checkUrl="'fileNameCheck?fileName='+escape(this.value)"/>
     	    	</f:entry>
+    	    	<f:entry title="${%backup.verbose.title}" help="${rootURL}/plugin/backup/backup_verbose.html">
+    	    		<f:checkbox name="verbose"/>
+    	    	</f:entry>
     	    	<f:entry>
 					<f:submit value="${%backup.launch}"/>
 				</f:entry>
