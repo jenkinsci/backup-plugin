@@ -5,4 +5,5 @@
 - backup configuration persistent
 - Add help files translations
 - Add a direct backup mode which output directly the backup content for batch mode
-- Add some output formats (gz, bz2,...)
+- Add some other output formats (gz, bz2,...)
+- Add clean restore or in place restore option

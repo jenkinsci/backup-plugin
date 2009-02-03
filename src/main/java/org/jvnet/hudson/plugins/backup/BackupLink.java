@@ -51,17 +51,17 @@ public class BackupLink extends ManagementLink {
 	}
 
 	/**
-	 * Checks if the backup filename entered is vlid or not
+	 * Checks if the backup filename entered is valid or not
 	 */
-	public void doFileNameCheck(StaplerRequest req, StaplerResponse rsp)
+	public boolean doBackupFileNameCheck(StaplerRequest req, StaplerResponse rsp)
 			throws IOException, ServletException {
 		Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
 		// this can be used to check the existence of a file on the server, so
 		// needs to be protected
 		new FormFieldValidator(req, rsp, true) {
 			public void check() throws IOException, ServletException {
-				File f = getFileParameter("fileName");
-				LOGGER.info("Filename : " + f.getName());
+				File f = getFileParameter("backupFileName");
+				LOGGER.info("Filename : " + f.getAbsolutePath());
 
 				fileNameOk = false;
 				if (StringUtils.isBlank(f.getName())) {
@@ -83,17 +83,54 @@ public class BackupLink extends ManagementLink {
 				ok();
 			}
 		}.process();
+		return fileNameOk;
+	}
+
+	/**
+	 * Checks if the restore file entered is valid or not
+	 */
+	public boolean doRestoreFileNameCheck(StaplerRequest req, StaplerResponse rsp)
+			throws IOException, ServletException {
+		Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
+		// this can be used to check the existence of a file on the server, so
+		// needs to be protected
+		new FormFieldValidator(req, rsp, true) {
+			public void check() throws IOException, ServletException {
+				File f = getFileParameter("restoreFileName");
+				LOGGER.info("Filename : " + f.getName());
+
+				fileNameOk = false;
+				if (StringUtils.isBlank(f.getName())) {
+					error(Messages.emptyFileName());
+					return;
+				}
+				
+				if (f.isDirectory()) {
+					error(Messages.fileIsADirectory());
+					return;
+				}
+
+				fileNameOk = true;
+				if (! f.exists()) {
+					warning(Messages.fileNotExists());
+					return;
+				}
+
+				ok();
+			}
+		}.process();
+		
+		return fileNameOk;
 	}
 
 	public void doDoBackup(StaplerRequest req, StaplerResponse rsp,
-			@QueryParameter("fileName") final String fileName, @QueryParameter("verbose") final boolean verbose)
+			@QueryParameter("backupFileName") final String fileName, @QueryParameter("verbose") final boolean verbose)
 			throws IOException, ServletException {
 		Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
 		LOGGER.info("Backuping hudson files into " + fileName + "....");
 
-		doFileNameCheck(req, rsp);
-		if (!fileNameOk) {
-			rsp.sendRedirect(".");
+		if (!doBackupFileNameCheck(req, rsp)) {
+			rsp.sendRedirect("configurebackup");
 			return;
 		}
 
@@ -111,6 +148,21 @@ public class BackupLink extends ManagementLink {
 		rsp.sendRedirect("backup");
 	}
 
+	public void doDoRestore(StaplerRequest req, StaplerResponse rsp,
+			@QueryParameter("restoreFileName") final String fileName, @QueryParameter("verbose") final boolean verbose)
+			throws IOException, ServletException {
+		Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
+		LOGGER.info("Restoring hudson files from " + fileName + "....");
+
+		if (!doRestoreFileNameCheck(req, rsp)) {
+			rsp.sendRedirect("configurerestore");
+			return;
+		}
+
+		throw new RuntimeException("Not implemented");
+	}
+	
+	
 	public void doProgressiveLog(StaplerRequest req, StaplerResponse rsp)
 			throws IOException {
 		new LargeText(getLogFile(), backupTask.isFinished()).doProgressText(

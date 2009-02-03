@@ -7,17 +7,17 @@
             ${it.displayName}
           </h1>
           
-	            <h2><A href="configurebackup">${%backup.title}</A></h2>
-	            <h2><A href="configurerestore">${%restore.title}</A></h2>
-	    	
-			<f:section title="${%restore.title}">
-				<f:entry title="${%restore.filename.title}">
-					<f:textbox name="restoreFileName" checkUrl="'restoreFileNameCheck?restoreFileName='+escape(this.value)"/>
-				</f:entry>
+		<f:form method="post" action="doRestore">
+			<st:include page="globalform.jelly"/>
+    	    <f:section title="${%restore.title}">
+    	    	<f:entry title="${%restore.filename.title}">
+    	    		<f:textbox name="restoreFileName" checkUrl="'backupFileNameCheck?restoreFileName='+escape(this.value)"/>
+    	    	</f:entry>
     	    	<f:entry>
 					<f:submit value="${%restore.launch}"/>
 				</f:entry>
 			</f:section>
+		</f:form>
 	</l:main-panel>
-  </l:layout>
+</l:layout>
 </j:jelly>
