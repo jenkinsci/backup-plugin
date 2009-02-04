@@ -10,14 +10,6 @@
 	            <h2><A href="configurebackup">${%backup.title}</A></h2>
 	            <h2><A href="configurerestore">${%restore.title}</A></h2>
 	    	
-			<f:section title="${%restore.title}">
-				<f:entry title="${%restore.filename.title}">
-					<f:textbox name="restoreFileName" checkUrl="'restoreFileNameCheck?restoreFileName='+escape(this.value)"/>
-				</f:entry>
-    	    	<f:entry>
-					<f:submit value="${%restore.launch}"/>
-				</f:entry>
-			</f:section>
 	</l:main-panel>
   </l:layout>
 </j:jelly>

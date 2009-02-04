@@ -4,12 +4,12 @@
     <l:main-panel>
           <h1>
             <img src="${it.iconFileName}" alt=""/>
-            ${it.displayName}
+            ${%backup.title}
           </h1>
           
 		<f:form method="post" action="doBackup">
-			<st:include page="globalform.jelly"/>
-    	    <f:section title="${%backup.title}">
+    	    <f:section title="${%backup.parameter.title}">
+				<st:include page="globalform.jelly"/>
     	    	<f:entry title="${%backup.filename.title}" help="${rootURL}/plugin/backup/help_backup_destination.html">
     	    		<f:textbox name="backupFileName" checkUrl="'backupFileNameCheck?backupFileName='+escape(this.value)"/>
     	    	</f:entry>
