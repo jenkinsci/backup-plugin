@@ -1,6 +1,6 @@
 package org.jvnet.hudson.plugins.backup.utils;
 
-import java.io.FileFilter;
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -8,23 +8,21 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.apache.commons.io.filefilter.IOFileFilter;
-import org.apache.commons.io.filefilter.NameFileFilter;
-import org.apache.commons.io.filefilter.NotFileFilter;
+import org.apache.commons.io.FileUtils;
 
 /**
- * This is the backup task, run in background and log to a file
+ * This is the restore task, run in background and log to a file
  * 
  * @author vsellier
  * 
  */
-public class BackupTask implements Runnable {
-	private final static Logger LOGGER = Logger.getLogger(BackupTask.class
+public class RestoreTask implements Runnable {
+	private final static Logger LOGGER = Logger.getLogger(RestoreTask.class
 			.getName());
 
 	private boolean verbose;
 	private String logFileName;
-	private String targetFileName;
+	private String sourceFileName;
 	private String configurationDirectory;
 
 	private List<String> exclusions = new ArrayList<String>();
@@ -36,13 +34,13 @@ public class BackupTask implements Runnable {
 
 	private boolean finished = false;
 
-	public BackupTask() {
+	public RestoreTask() {
 		exclusions.addAll(getDefaultsExclusions());
 	}
 
 	public void run() {
 		assert (logFileName != null);
-		assert (targetFileName != null);
+		assert (sourceFileName != null);
 
 		startDate = new Date();
 		try {
@@ -53,18 +51,38 @@ public class BackupTask implements Runnable {
 			return;
 		}
 
-		logger.info("Backup started at " + getTimestamp(startDate));
+		logger.info("Restore started at " + getTimestamp(startDate));
 
-		FileFilter filter = createFileFilter(exclusions);
-
+		logger.info("Removing old configuration files");
+		File directory = new File(configurationDirectory);
+		
 		try {
-			ZipBackupEngine backupEngine = new ZipBackupEngine(logger,
-					configurationDirectory, targetFileName, filter);
-			backupEngine.doBackup();
+			FileUtils.deleteDirectory(directory);
 		} catch (IOException e) {
+			logger.error("Unable to delete old configuration directory");
 			e.printStackTrace(logger.getWriter());
+			logger.error("Hudson could be in a inconsistent state.");
+			logger.error("Try to uncompress manually " + sourceFileName + " into " + configurationDirectory + " directory.");
+			return;
 		}
-
+		
+		if ( ! directory.mkdir()) {
+			logger.error("Unable to create " + configurationDirectory + " directory.");
+			return;
+		}
+		
+		
+		
+//		FileFilter filter = createFileFilter(exclusions);
+//
+//		try {
+//			ZipBackupEngine backupEngine = new ZipBackupEngine(logger,
+//					configurationDirectory, targetFileName, filter);
+//			backupEngine.doBackup();
+//		} catch (IOException e) {
+//			e.printStackTrace(logger.getWriter());
+//		}
+//
 		endDate = new Date();
 		logger.info("Backup end at " + getTimestamp(endDate));
 		BigDecimal delay = new BigDecimal(endDate.getTime()
@@ -81,8 +99,8 @@ public class BackupTask implements Runnable {
 		this.logFileName = logFileName;
 	}
 
-	public void setTargetFileName(String targetFileName) {
-		this.targetFileName = targetFileName;
+	public void setSourceFileName(String sourceFileName) {
+		this.sourceFileName = sourceFileName;
 	}
 
 	public void setConfigurationDirectory(String configurationDirectory) {
@@ -110,15 +128,5 @@ public class BackupTask implements Runnable {
 	 */
 	private static String getTimestamp(Date date) {
 		return String.format("[%1$tD %1$tT]", date);
-	}
-
-	private FileFilter createFileFilter(List<String> exclusions) {
-		// creating the filter
-		IOFileFilter filter = new NameFileFilter(exclusions
-				.toArray(new String[] {}));
-		// revert it because they are exclusions
-		filter = new NotFileFilter(filter);
-
-		return filter;
 	}
 }

@@ -3,6 +3,14 @@ package org.jvnet.hudson.plugins.backup.utils;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * This class is used to change the verbosity of the backup plugin. 
+ * <br>
+ * This apply to the backup log only, not on the hudson console logger
+ * 
+ * @author vsellier
+ *
+ */
 public class BackupLogger {
 	private PrintWriter logFile;
 	private boolean debug;

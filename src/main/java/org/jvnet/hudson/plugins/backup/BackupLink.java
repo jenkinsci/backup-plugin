@@ -61,7 +61,7 @@ public class BackupLink extends ManagementLink {
 		new FormFieldValidator(req, rsp, true) {
 			public void check() throws IOException, ServletException {
 				File f = getFileParameter("backupFileName");
-				LOGGER.info("Filename : " + f.getAbsolutePath());
+				LOGGER.fine("Filename : " + f.getAbsolutePath());
 
 				fileNameOk = false;
 				if (StringUtils.isBlank(f.getName())) {
@@ -97,7 +97,7 @@ public class BackupLink extends ManagementLink {
 		new FormFieldValidator(req, rsp, true) {
 			public void check() throws IOException, ServletException {
 				File f = getFileParameter("restoreFileName");
-				LOGGER.info("Filename : " + f.getName());
+				LOGGER.fine("Filename : " + f.getName());
 
 				fileNameOk = false;
 				if (StringUtils.isBlank(f.getName())) {
@@ -134,7 +134,7 @@ public class BackupLink extends ManagementLink {
 			return;
 		}
 
-		// configuring backup configuring
+		// configuring backup 
 		backupTask.setVerbose(verbose);
 		backupTask.setLogFileName(getLogFile().getAbsolutePath());
 		backupTask.setTargetFileName(fileName);
