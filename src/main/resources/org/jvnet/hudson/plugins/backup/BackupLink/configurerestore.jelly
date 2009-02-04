@@ -4,14 +4,14 @@
     <l:main-panel>
           <h1>
             <img src="${it.iconFileName}" alt=""/>
-            ${it.displayName}
+            ${%restore.title}
           </h1>
           
 		<f:form method="post" action="doRestore">
-			<st:include page="globalform.jelly"/>
-    	    <f:section title="${%restore.title}">
+    	    <f:section title="${%restore.parameters.title}">
+				<st:include page="globalform.jelly"/>
     	    	<f:entry title="${%restore.filename.title}">
-    	    		<f:textbox name="restoreFileName" checkUrl="'backupFileNameCheck?restoreFileName='+escape(this.value)"/>
+    	    		<f:textbox name="restoreFileName" checkUrl="'restoreFileNameCheck?restoreFileName='+escape(this.value)"/>
     	    	</f:entry>
     	    	<f:entry>
 					<f:submit value="${%restore.launch}"/>

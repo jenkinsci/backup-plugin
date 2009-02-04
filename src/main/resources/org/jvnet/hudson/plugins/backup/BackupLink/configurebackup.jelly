@@ -8,7 +8,7 @@
           </h1>
           
 		<f:form method="post" action="doBackup">
-    	    <f:section title="${%backup.parameter.title}">
+    	    <f:section title="${%backup.parameters.title}">
 				<st:include page="globalform.jelly"/>
     	    	<f:entry title="${%backup.filename.title}" help="${rootURL}/plugin/backup/help_backup_destination.html">
     	    		<f:textbox name="backupFileName" checkUrl="'backupFileNameCheck?backupFileName='+escape(this.value)"/>
