@@ -1,14 +1,18 @@
 package org.jvnet.hudson.plugins.backup.utils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.input.AutoCloseInputStream;
 
 /**
  * This is the restore task, run in background and log to a file
@@ -71,7 +75,26 @@ public class RestoreTask implements Runnable {
 			return;
 		}
 		
+		File archive = new File(sourceFileName);
+		ZipInputStream input;
+		try {
+			input = new ZipInputStream(new AutoCloseInputStream(new FileInputStream(archive))); 
+		} catch (IOException e) {
+			logger.error("Unable to open archive.");
+			return;
+		}
+
+		ZipEntry entry;
 		
+		try {
+			while ((entry = input.getNextEntry()) != null) {
+				logger.debug("Decompression de " + entry.getName());
+			}
+		} catch (IOException e) {
+			log.error("Error uncompressing zip file.");
+			return
+
+		}
 		
 //		FileFilter filter = createFileFilter(exclusions);
 //
