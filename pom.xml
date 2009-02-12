@@ -6,13 +6,11 @@
 		<version>1.282</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	<groupId>org.jvnet.hudson.plugins</groupId>
 	<artifactId>backup</artifactId>
 	<packaging>hpi</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<name>Backup plugin</name>
-	<description>Backup and restore Hudson configuration files
-	</description>
+	<description>Backup and restore Hudson configuration files</description>
 	
 	<dependencies>
 		<dependency>
@@ -26,21 +24,4 @@
 			<version>2.4</version>
 		</dependency>
 	</dependencies>
-	
-	<build>
-		<!--
-			Since new versions need to overwrite old versions, it's better not to
-			have version number in the .hpi file name.
-		-->
-		<finalName>${project.artifactId}</finalName>
-		<defaultGoal>package</defaultGoal>
-		<plugins>
-			<plugin>
-				<groupId>org.jvnet.hudson.tools</groupId>
-				<artifactId>maven-hpi-plugin</artifactId>
-				<version>1.24</version>
-				<extensions>true</extensions>
-			</plugin>
-		</plugins>
-	</build>
 </project>
