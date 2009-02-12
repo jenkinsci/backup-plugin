@@ -91,9 +91,8 @@ public class RestoreTask implements Runnable {
 				logger.debug("Decompression de " + entry.getName());
 			}
 		} catch (IOException e) {
-			log.error("Error uncompressing zip file.");
-			return
-
+			logger.error("Error uncompressing zip file.");
+			return;
 		}
 		
 //		FileFilter filter = createFileFilter(exclusions);
