@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.NameFileFilter;
@@ -18,31 +17,17 @@ import org.apache.commons.io.filefilter.NotFileFilter;
  * @author vsellier
  * 
  */
-public class BackupTask implements Runnable {
-	private final static Logger LOGGER = Logger.getLogger(BackupTask.class
-			.getName());
+public class BackupTask extends BackupPluginTask {
 
-	private boolean verbose;
-	private String logFileName;
-	private String targetFileName;
-	private String configurationDirectory;
+    private List<String> exclusions = new ArrayList<String>();
 
-	private List<String> exclusions = new ArrayList<String>();
-
-	private BackupLogger logger;
-
-	private Date startDate;
-	private Date endDate;
-
-	private boolean finished = false;
-
-	public BackupTask() {
+    public BackupTask() {
 		exclusions.addAll(getDefaultsExclusions());
 	}
 
 	public void run() {
 		assert (logFileName != null);
-		assert (targetFileName != null);
+		assert (fileName != null);
 
 		startDate = new Date();
 		try {
@@ -59,7 +44,7 @@ public class BackupTask implements Runnable {
 
 		try {
 			ZipBackupEngine backupEngine = new ZipBackupEngine(logger,
-					configurationDirectory, targetFileName, filter);
+					configurationDirectory, fileName, filter);
 			backupEngine.doBackup();
 		} catch (IOException e) {
 			e.printStackTrace(logger.getWriter());
@@ -77,27 +62,7 @@ public class BackupTask implements Runnable {
 		logger.close();
 	}
 
-	public void setLogFileName(String logFileName) {
-		this.logFileName = logFileName;
-	}
-
-	public void setTargetFileName(String targetFileName) {
-		this.targetFileName = targetFileName;
-	}
-
-	public void setConfigurationDirectory(String configurationDirectory) {
-		this.configurationDirectory = configurationDirectory;
-	}
-
-	public boolean isFinished() {
-		return finished;
-	}
-
-	public void setVerbose(boolean verbose) {
-		this.verbose = verbose;
-	}
-
-	public List<String> getDefaultsExclusions() {
+    public List<String> getDefaultsExclusions() {
 		List<String> defaultExclusion = new ArrayList<String>();
 
 		defaultExclusion.add("workspace");
@@ -105,14 +70,7 @@ public class BackupTask implements Runnable {
 		return defaultExclusion;
 	}
 
-	/**
-	 * Gets the formatted current time stamp.
-	 */
-	private static String getTimestamp(Date date) {
-		return String.format("[%1$tD %1$tT]", date);
-	}
-
-	private FileFilter createFileFilter(List<String> exclusions) {
+    private FileFilter createFileFilter(List<String> exclusions) {
 		// creating the filter
 		IOFileFilter filter = new NameFileFilter(exclusions
 				.toArray(new String[] {}));

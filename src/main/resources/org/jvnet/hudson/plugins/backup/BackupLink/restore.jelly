@@ -7,7 +7,7 @@
         <div id="spinner">
           <img src="${imagesURL}/spinner.gif" alt=""/>
         </div>
-        <t:progressiveText href="progressiveBackupLog" idref="out" spinner="spinner" /> 
+        <t:progressiveText href="progressiveRestoreLog" idref="out" spinner="spinner" /> 
       </l:isAdmin>
     </l:main-panel>
   </l:layout>

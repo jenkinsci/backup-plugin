@@ -20,31 +20,14 @@ import org.apache.commons.io.input.AutoCloseInputStream;
  * @author vsellier
  * 
  */
-public class RestoreTask implements Runnable {
+public class RestoreTask extends BackupPluginTask {
 	private final static Logger LOGGER = Logger.getLogger(RestoreTask.class
 			.getName());
+    private static final int BUFFER_LENGTH = 1024;
 
-	private boolean verbose;
-	private String logFileName;
-	private String sourceFileName;
-	private String configurationDirectory;
-
-	private List<String> exclusions = new ArrayList<String>();
-
-	private BackupLogger logger;
-
-	private Date startDate;
-	private Date endDate;
-
-	private boolean finished = false;
-
-	public RestoreTask() {
-		exclusions.addAll(getDefaultsExclusions());
-	}
-
-	public void run() {
+    public void run() {
 		assert (logFileName != null);
-		assert (sourceFileName != null);
+		assert (fileName != null);
 
 		startDate = new Date();
 		try {
@@ -54,28 +37,30 @@ public class RestoreTask implements Runnable {
 					+ logFileName);
 			return;
 		}
-
+                                                
 		logger.info("Restore started at " + getTimestamp(startDate));
 
 		logger.info("Removing old configuration files");
 		File directory = new File(configurationDirectory);
 		
-		try {
-			FileUtils.deleteDirectory(directory);
-		} catch (IOException e) {
-			logger.error("Unable to delete old configuration directory");
-			e.printStackTrace(logger.getWriter());
-			logger.error("Hudson could be in a inconsistent state.");
-			logger.error("Try to uncompress manually " + sourceFileName + " into " + configurationDirectory + " directory.");
-			return;
-		}
+//		try {
+            // Not using tools like FileUtils.deleteDirectory
+            // because they failed with non existing symbolic links
+			delete(directory);
+//		} catch (IOException e) {
+//			logger.error("Unable to delete old configuration directory");
+//			e.printStackTrace(logger.getWriter());
+//			logger.error("Hudson could be in a inconsistent state.");
+//			logger.error("Try to uncompress manually " + fileName + " into " + configurationDirectory + " directory.");
+//			return;
+//		}
 		
 		if ( ! directory.mkdir()) {
 			logger.error("Unable to create " + configurationDirectory + " directory.");
 			return;
 		}
 		
-		File archive = new File(sourceFileName);
+		File archive = new File(fileName);
 		ZipInputStream input;
 		try {
 			input = new ZipInputStream(new AutoCloseInputStream(new FileInputStream(archive))); 
@@ -85,26 +70,32 @@ public class RestoreTask implements Runnable {
 		}
 
 		ZipEntry entry;
-		
+
 		try {
 			while ((entry = input.getNextEntry()) != null) {
 				logger.debug("Decompression de " + entry.getName());
+                long entrySize = entry.getSize();
+
+                String destination = entry.getName();
+
+                File absoluteDestination = new File(directory, destination);
+                File absoluteDirectory = absoluteDestination.getParentFile();
+                // create the directory
+                FileUtils.forceMkdir(absoluteDirectory);
+
+                // uncompress the file
+                int count;
+                byte[] data = new byte[BUFFER_LENGTH];
+                
+                
+
+                
 			}
 		} catch (IOException e) {
 			logger.error("Error uncompressing zip file.");
 			return;
 		}
 		
-//		FileFilter filter = createFileFilter(exclusions);
-//
-//		try {
-//			ZipBackupEngine backupEngine = new ZipBackupEngine(logger,
-//					configurationDirectory, targetFileName, filter);
-//			backupEngine.doBackup();
-//		} catch (IOException e) {
-//			e.printStackTrace(logger.getWriter());
-//		}
-//
 		endDate = new Date();
 		logger.info("Backup end at " + getTimestamp(endDate));
 		BigDecimal delay = new BigDecimal(endDate.getTime()
@@ -117,38 +108,18 @@ public class RestoreTask implements Runnable {
 		logger.close();
 	}
 
-	public void setLogFileName(String logFileName) {
-		this.logFileName = logFileName;
-	}
+    private void delete(File file) {
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (int i = 0; i<files.length; i++) {
+                delete(files[i]);
+            }
+        }
+        if (verbose) {
+            logger.debug("Deleting " + file.getAbsolutePath());
+        }
+        file.delete();
+    }
 
-	public void setSourceFileName(String sourceFileName) {
-		this.sourceFileName = sourceFileName;
-	}
 
-	public void setConfigurationDirectory(String configurationDirectory) {
-		this.configurationDirectory = configurationDirectory;
-	}
-
-	public boolean isFinished() {
-		return finished;
-	}
-
-	public void setVerbose(boolean verbose) {
-		this.verbose = verbose;
-	}
-
-	public List<String> getDefaultsExclusions() {
-		List<String> defaultExclusion = new ArrayList<String>();
-
-		defaultExclusion.add("workspace");
-
-		return defaultExclusion;
-	}
-
-	/**
-	 * Gets the formatted current time stamp.
-	 */
-	private static String getTimestamp(Date date) {
-		return String.format("[%1$tD %1$tT]", date);
-	}
 }
