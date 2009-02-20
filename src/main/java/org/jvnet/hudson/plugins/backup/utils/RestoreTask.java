@@ -1,8 +1,6 @@
 package org.jvnet.hudson.plugins.backup.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -83,14 +81,21 @@ public class RestoreTask extends BackupPluginTask {
                 // create the directory
                 FileUtils.forceMkdir(absoluteDirectory);
 
+                // Open the output stream
+                OutputStream output = new BufferedOutputStream(new FileOutputStream(absoluteDestination));
+
                 // uncompress the file
                 int count;
                 byte[] data = new byte[BUFFER_LENGTH];
-                
-                
 
-                
+                while ((count = input.read(data, 0, BUFFER_LENGTH)) != -1) {
+                    output.write(data, 0, count);
+                }
+
+                output.flush();
+                output.close();
 			}
+            input.close();
 		} catch (IOException e) {
 			logger.error("Error uncompressing zip file.");
 			return;
