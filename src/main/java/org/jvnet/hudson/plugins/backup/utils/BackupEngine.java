@@ -3,19 +3,21 @@ package org.jvnet.hudson.plugins.backup.utils;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.DirectoryWalker;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.AutoCloseInputStream;
+import org.jvnet.hudson.plugins.backup.BackupException;
+import org.jvnet.hudson.plugins.backup.utils.compress.Archiver;
+import org.jvnet.hudson.plugins.backup.utils.compress.ArchiverException;
+import org.jvnet.hudson.plugins.backup.utils.compress.CompressionMethodEnum;
 
-public class ZipBackupEngine extends DirectoryWalker {
+public class BackupEngine extends DirectoryWalker {
 	private BackupLogger logger;
 	private File source;
 	private int nbFiles = 0;
@@ -25,10 +27,11 @@ public class ZipBackupEngine extends DirectoryWalker {
 	 * the length of the source string, to speed up walk
 	 */
 	private int sourceLength;
-	private ZipOutputStream target;
+	// private ZipOutputStream target;
+	private Archiver archiver;
 
-	public ZipBackupEngine(BackupLogger logger, String sourceDirectory,
-			String targetName, FileFilter filter) throws IOException {
+	public BackupEngine(BackupLogger logger, String sourceDirectory,
+			String targetName, FileFilter filter) throws BackupException {
 		super(filter, -1);
 		this.logger = logger;
 		this.source = new File(sourceDirectory);
@@ -36,10 +39,16 @@ public class ZipBackupEngine extends DirectoryWalker {
 
 		File targetFile = new File(targetName);
 		logger.info("Full backup file name : " + targetFile.getAbsolutePath());
-
-		target = new ZipOutputStream(new FileOutputStream(targetFile));
-		target.setLevel(9);
-
+		
+		// TODO parameterized this
+		archiver = CompressionMethodEnum.ZIP.getArchiver();
+		
+		try {
+			archiver.init(targetFile);
+		} catch (ArchiverException e) {
+			throw new BackupException(e);
+		}
+		
 	}
 
 	@Override
@@ -48,7 +57,7 @@ public class ZipBackupEngine extends DirectoryWalker {
 
 		if (!file.exists()) {
 			logger.warn("inconsistent file " + file.getAbsolutePath());
-			nbErrors ++;
+			nbErrors++;
 			super.handleFile(file, depth, results);
 			return;
 		}
@@ -57,27 +66,37 @@ public class ZipBackupEngine extends DirectoryWalker {
 
 		logger.debug(name + " file");
 
-		ZipEntry entry = new ZipEntry(name);
-		entry.setTime(file.lastModified());
-		target.putNextEntry(entry);
-
-		InputStream stream = new AutoCloseInputStream(new FileInputStream(file));
-		IOUtils.copy(stream, target);
+		try {
+			archiver.addFile(name, file);
+		} catch(ArchiverException e) {
+			logger.error(e.getMessage());
+			throw new IOException(e);
+		}
 
 		nbFiles++;
-		
+
 		super.handleFile(file, depth, results);
 	}
 
 	@Override
 	protected void handleEnd(Collection results) throws IOException {
-		target.close();
+		try {
+			archiver.close();
+		} catch(ArchiverException e) {
+			logger.error(e.getMessage());
+			throw new IOException(e);
+		}
 		logger.info("Saved files : " + nbFiles);
 		logger.info("Number of errors : " + nbErrors);
 	}
 
-	public void doBackup() throws IOException {
-		this.walk(source, new ArrayList<Object>());
+	public void doBackup() throws BackupException {
+		
+		try {
+			this.walk(source, new ArrayList<Object>());
+		} catch (IOException e) {
+			throw new BackupException(e);
+		}
 	}
 
 	/**

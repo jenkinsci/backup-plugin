@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.NameFileFilter;
 import org.apache.commons.io.filefilter.NotFileFilter;
+import org.jvnet.hudson.plugins.backup.BackupException;
 
 /**
  * This is the backup task, run in background and log to a file
@@ -43,10 +44,10 @@ public class BackupTask extends BackupPluginTask {
 		FileFilter filter = createFileFilter(exclusions);
 
 		try {
-			ZipBackupEngine backupEngine = new ZipBackupEngine(logger,
+			BackupEngine backupEngine = new BackupEngine(logger,
 					configurationDirectory, fileName, filter);
 			backupEngine.doBackup();
-		} catch (IOException e) {
+		} catch (BackupException e) {
 			e.printStackTrace(logger.getWriter());
 		}
 
