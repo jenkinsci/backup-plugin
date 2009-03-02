@@ -1,7 +1,6 @@
 package org.jvnet.hudson.plugins.backup.utils.compress;
 
 import java.io.File;
-import java.io.IOException;
 
 
 /**

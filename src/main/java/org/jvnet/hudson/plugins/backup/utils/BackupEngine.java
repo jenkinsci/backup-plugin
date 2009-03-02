@@ -70,7 +70,7 @@ public class BackupEngine extends DirectoryWalker {
 			archiver.addFile(name, file);
 		} catch(ArchiverException e) {
 			logger.error(e.getMessage());
-			throw new IOException(e);
+			throw new IOException("Unable to add " + name, e);
 		}
 
 		nbFiles++;
@@ -84,7 +84,7 @@ public class BackupEngine extends DirectoryWalker {
 			archiver.close();
 		} catch(ArchiverException e) {
 			logger.error(e.getMessage());
-			throw new IOException(e);
+			throw new IOException(e.getMessage());
 		}
 		logger.info("Saved files : " + nbFiles);
 		logger.info("Number of errors : " + nbErrors);

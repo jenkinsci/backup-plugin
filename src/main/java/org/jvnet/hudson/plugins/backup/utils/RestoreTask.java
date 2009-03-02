@@ -14,6 +14,9 @@ import java.util.zip.ZipInputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.input.AutoCloseInputStream;
+import org.jvnet.hudson.plugins.backup.utils.compress.ArchiverException;
+import org.jvnet.hudson.plugins.backup.utils.compress.CompressionMethodEnum;
+import org.jvnet.hudson.plugins.backup.utils.compress.UnArchiver;
 
 /**
  * This is the restore task, run in background and log to a file
@@ -53,47 +56,17 @@ public class RestoreTask extends BackupPluginTask {
         }
 
         File archive = new File(fileName);
-        ZipInputStream input;
-        try {
-            input = new ZipInputStream(new AutoCloseInputStream(new FileInputStream(archive)));
-        } catch (IOException e) {
-            logger.error("Unable to open archive.");
-            return;
-        }
 
-        ZipEntry entry;
+        logger.info("Uncompressing archive file...");
+        UnArchiver unAchiver = CompressionMethodEnum.ZIP.getUnArchiver();
 
         try {
-            while ((entry = input.getNextEntry()) != null) {
-                logger.debug("Decompression de " + entry.getName());
-                long entrySize = entry.getSize();
-
-                String destination = entry.getName();
-
-                File absoluteDestination = new File(directory, destination);
-                File absoluteDirectory = absoluteDestination.getParentFile();
-                // create the directory
-                FileUtils.forceMkdir(absoluteDirectory);
-
-                // Open the output stream
-                OutputStream output = new BufferedOutputStream(new FileOutputStream(absoluteDestination));
-
-                // uncompress the file
-                int count;
-                byte[] data = new byte[BUFFER_LENGTH];
-
-                while ((count = input.read(data, 0, BUFFER_LENGTH)) != -1) {
-                    output.write(data, 0, count);
-                }
-
-                output.flush();
-                output.close();
-            }
-            input.close();
-        } catch (IOException e) {
-            logger.error("Error uncompressing zip file.");
-            return;
-        }
+			unAchiver.unArchive(archive, configurationDirectory);
+		} catch (ArchiverException e) {
+			logger.error("Error uncompressiong archive.");
+			logger.error("Look to hudson global logs for more informations.");
+		}
+        
 
         endDate = new Date();
         logger.info("Backup end at " + getTimestamp(endDate));
