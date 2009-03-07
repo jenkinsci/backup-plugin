@@ -13,7 +13,8 @@ public class ZipUnArchiver implements UnArchiver {
 
 	public void unArchive(File archive, String toDir) throws ArchiverException {
 		org.codehaus.plexus.archiver.zip.ZipUnArchiver unarchiver =
-			new org.codehaus.plexus.archiver.zip.ZipUnArchiver(archive);
+			new org.codehaus.plexus.archiver.zip.ZipUnArchiver();
+		
 		File destDir = new File(toDir);
 		
 		if (!destDir.exists()) {
@@ -27,7 +28,9 @@ public class ZipUnArchiver implements UnArchiver {
 			}
 		}
 		
+		unarchiver.setSourceFile(archive);
 		unarchiver.setDestDirectory(destDir);
+		
 	}
 
 }
