@@ -62,7 +62,7 @@ public class RestoreTask extends BackupPluginTask {
 
         try {
 			unAchiver.unArchive(archive, configurationDirectory);
-		} catch (ArchiverException e) {
+		} catch (Exception e) {
 			logger.error("Error uncompressiong archive.");
 			logger.error("Look to hudson global logs for more informations.");
 		}
