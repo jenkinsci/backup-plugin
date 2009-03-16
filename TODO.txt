@@ -1,4 +1,3 @@
-- Call prepare for shutdown before backup / cancel shutdown after backup
 - Call reload configurationfrom disk after restore
 - backup element choice 
 	- include jobs's workspaces or not
