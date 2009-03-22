@@ -102,7 +102,7 @@ public class BackupTask extends BackupPluginTask {
 		logger
 				.info("Setting hudson in shutdown mode to avoid files corruptions.");
 		try {
-			Hudson.getInstance().doQuietDown(getStaplerResponseFake());
+			Hudson.getInstance().doQuietDown(FakeObject.getStaplerResponseFake());
 		} catch (Exception e) {
 			logger.error("Erreur putting hudson in shutdown mode.");
 			e.printStackTrace(logger.getWriter());
@@ -133,21 +133,11 @@ public class BackupTask extends BackupPluginTask {
 	private void cancelNoJobs() {
 		logger.info("Cancel hudson shutdown mode");
 		try {
-			Hudson.getInstance().doCancelQuietDown(getStaplerResponseFake());
+			Hudson.getInstance().doCancelQuietDown(FakeObject.getStaplerResponseFake());
 		} catch (Exception e) {
 			logger.error("Erreur cancelling hudson shutdown mode.");
 			e.printStackTrace(logger.getWriter());
 		}
 	}
 
-	private StaplerResponse getStaplerResponseFake() {
-		return (StaplerResponse) Proxy.newProxyInstance(Thread.currentThread()
-				.getContextClassLoader(),
-				new Class[] { StaplerResponse.class }, new InvocationHandler() {
-					public Object invoke(Object proxy, Method method,
-							Object[] args) throws Throwable {
-						return null;
-					}
-				});
-	}
 }

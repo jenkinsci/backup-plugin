@@ -1,22 +1,20 @@
 package org.jvnet.hudson.plugins.backup.utils;
 
-import java.io.BufferedOutputStream;
+import hudson.model.Hudson;
+import hudson.util.HudsonIsLoading;
+
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.logging.Logger;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.input.AutoCloseInputStream;
-import org.jvnet.hudson.plugins.backup.utils.compress.ArchiverException;
+import javax.servlet.ServletContext;
+
 import org.jvnet.hudson.plugins.backup.utils.compress.CompressionMethodEnum;
 import org.jvnet.hudson.plugins.backup.utils.compress.UnArchiver;
+import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.StaplerResponse;
 
 /**
  * This is the restore task, run in background and log to a file
@@ -26,8 +24,18 @@ import org.jvnet.hudson.plugins.backup.utils.compress.UnArchiver;
 public class RestoreTask extends BackupPluginTask {
     private final static Logger LOGGER = Logger.getLogger(RestoreTask.class
             .getName());
-    private static final int BUFFER_LENGTH = 1024;
 
+    /**
+     * This context will be passed to the StaplerRequest mock
+     * at the end of the restore. It is used be {@link Hudson} to put
+     * the {@link HudsonIsLoading} object. 
+     */
+    private ServletContext servletContext;
+    
+    public RestoreTask(ServletContext servletContext) {
+    	this.servletContext = servletContext;
+    }
+    
     public void run() {
         assert (logFileName != null);
         assert (fileName != null);
@@ -67,7 +75,21 @@ public class RestoreTask extends BackupPluginTask {
 			logger.error("Look to hudson global logs for more informations.");
 		}
         
+		logger.info("*****************************************");
+		logger.info("Reloading hudson configuration from disk.");
+		logger.info("*****************************************");
 
+		StaplerRequest request = FakeObject.getStaplerRequestFake(servletContext);
+		StaplerResponse response = FakeObject.getStaplerResponseFake();
+		
+		try {
+			Hudson.getInstance().doReload(request, response);
+		} catch (IOException e) {
+			logger.error("Error reloading config files from disk.");
+			logger.error("Call this method manually");
+			e.printStackTrace(logger.getWriter());
+		}
+		
         endDate = new Date();
         logger.info("Backup end at " + getTimestamp(endDate));
         BigDecimal delay = new BigDecimal(endDate.getTime()

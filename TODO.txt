@@ -1,4 +1,3 @@
-- Call reload configurationfrom disk after restore
 - backup element choice 
 	- include jobs's workspaces or not
 	- include builds history or not
