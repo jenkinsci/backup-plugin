@@ -1,5 +1,6 @@
 package org.jvnet.hudson.plugins.backup;
 
+import hudson.Extension;
 import hudson.model.Hudson;
 import hudson.model.ManagementLink;
 import hudson.util.FormFieldValidator;
@@ -12,14 +13,15 @@ import java.util.logging.Logger;
 import javax.servlet.ServletException;
 
 import org.apache.commons.lang.StringUtils;
-import org.jvnet.hudson.plugins.backup.utils.BackupTask;
 import org.jvnet.hudson.plugins.backup.utils.BackupPluginTask;
+import org.jvnet.hudson.plugins.backup.utils.BackupTask;
 import org.jvnet.hudson.plugins.backup.utils.RestoreTask;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
 import org.kohsuke.stapler.framework.io.LargeText;
 
+@Extension
 public class BackupLink extends ManagementLink {
     private final static Logger LOGGER = Logger.getLogger(BackupLink.class
             .getName());
