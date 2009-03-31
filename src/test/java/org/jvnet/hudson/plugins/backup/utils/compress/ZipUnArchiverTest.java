@@ -3,14 +3,13 @@ package org.jvnet.hudson.plugins.backup.utils.compress;
 import java.io.File;
 
 import org.apache.commons.io.FileUtils;
-import org.codehaus.plexus.archiver.zip.ZipUnArchiver;
-import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ZipArchiverTest {
+
+public class ZipUnArchiverTest {
 	private final static String OUTPUT_DIRECTORY = "target";
 	private final static String UNCOMPRESS_DIRECTORY = OUTPUT_DIRECTORY
 			+ "/uncompress";
@@ -33,7 +32,8 @@ public class ZipArchiverTest {
 	}
 
 	@Test
-	public void testArchiver() throws Exception {
+	public void testUnArchiver() throws Exception {
+		// TODO use java zip API
 		ZipArchiver archiver = new ZipArchiver();
 		archiver.init(archiveFile);
 
@@ -49,12 +49,8 @@ public class ZipArchiverTest {
 		archiver.close();
 
 		ZipUnArchiver unarchiver = new ZipUnArchiver();
-		unarchiver.setSourceFile(archiveFile);
-
-		unarchiver.setDestDirectory(targetDirectory);
-		unarchiver.enableLogging(new ConsoleLogger(ConsoleLogger.LEVEL_DEBUG,
-				"Logger"));
-		unarchiver.extract();
+		
+		unarchiver.unArchive(archiveFile, targetDirectory.getAbsolutePath());
 
 		Assert.assertTrue(ArchiverTestUtil.compareDirectoryContent(new File(Thread
 				.currentThread().getContextClassLoader().getResource("data")
@@ -67,5 +63,4 @@ public class ZipArchiverTest {
 		archiveFile.delete();
 		FileUtils.deleteDirectory(targetDirectory);
 	}
-
 }
