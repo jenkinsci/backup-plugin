@@ -5,7 +5,8 @@ package org.jvnet.hudson.plugins.backup.utils.compress;
  * List the different compression methods supported by backup plugin
  */
 public enum CompressionMethodEnum {
-    ZIP("ZIP", ZipArchiver.class, ZipUnArchiver.class);
+    ZIP("ZIP", ZipArchiver.class, ZipUnArchiver.class),
+    TARGZIP("tgz", TarGzipArchiver.class, TarGzipUnArchiver.class);
 
     private final String code;
     private final Class<? extends Archiver> archiverClass;
