@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
-import org.jvnet.hudson.plugins.backup.utils.BackupTask;
 
 public abstract class AbstractUnArchiver implements UnArchiver {
 	protected final static Logger LOGGER = Logger.getLogger(AbstractUnArchiver.class
