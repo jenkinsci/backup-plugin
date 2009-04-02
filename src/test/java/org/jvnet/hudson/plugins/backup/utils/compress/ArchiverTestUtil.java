@@ -7,6 +7,19 @@ import org.apache.commons.io.FileUtils;
 
 public class ArchiverTestUtil {
 
+	public static void addTestFiles(Archiver archiver) throws ArchiverException {
+		archiver.addFile("file1", new File(Thread.currentThread()
+				.getContextClassLoader().getResource("data/file1").getFile()));
+		archiver.addFile("dir1/file1", new File(Thread.currentThread()
+				.getContextClassLoader().getResource("data/dir1/file1")
+				.getFile()));
+		archiver.addFile("dir1/file2", new File(Thread.currentThread()
+				.getContextClassLoader().getResource("data/dir1/file2")
+				.getFile()));
+
+		archiver.close();
+	}
+	
 	/**
 	 * Compare the content of 2 dufferents directory
 	 * @param directory1

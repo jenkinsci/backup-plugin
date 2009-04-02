@@ -37,17 +37,8 @@ public class ZipArchiverTest {
 		ZipArchiver archiver = new ZipArchiver();
 		archiver.init(archiveFile);
 
-		archiver.addFile("file1", new File(Thread.currentThread()
-				.getContextClassLoader().getResource("data/file1").getFile()));
-		archiver.addFile("dir1/file1", new File(Thread.currentThread()
-				.getContextClassLoader().getResource("data/dir1/file1")
-				.getFile()));
-		archiver.addFile("dir1/file2", new File(Thread.currentThread()
-				.getContextClassLoader().getResource("data/dir1/file2")
-				.getFile()));
-
-		archiver.close();
-
+		ArchiverTestUtil.addTestFiles(archiver);
+		
 		ZipUnArchiver unarchiver = new ZipUnArchiver();
 		unarchiver.setSourceFile(archiveFile);
 
