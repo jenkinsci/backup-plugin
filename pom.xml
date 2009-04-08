@@ -10,7 +10,7 @@
 	<packaging>hpi</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<name>Hudson Backup plugin</name>
-	<url>http://hudson.gotdns.com/wiki/display/HUDSON/Backup+Plugin</url>
+	<url>http://wiki.hudson-ci.org/display/HUDSON/Backup+Plugin</url>
 	<description>Backup and restore Hudson configuration files</description>
 	
 	<dependencies>
