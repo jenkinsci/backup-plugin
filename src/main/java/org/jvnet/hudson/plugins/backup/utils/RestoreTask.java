@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import javax.servlet.ServletContext;
 
+import org.apache.commons.io.FileUtils;
 import org.jvnet.hudson.plugins.backup.utils.compress.CompressionMethodEnum;
 import org.jvnet.hudson.plugins.backup.utils.compress.UnArchiver;
 import org.kohsuke.stapler.StaplerRequest;
@@ -51,30 +52,45 @@ public class RestoreTask extends BackupPluginTask {
 
         logger.info("Restore started at " + getTimestamp(startDate));
 
-        logger.info("Removing old configuration files");
         File directory = new File(configurationDirectory);
+        
+        String tempDirectoryPath = configurationDirectory + "_restore";
+        logger.info("Working into " + tempDirectoryPath + " directory");
+        
+        File temporary_directory = new File(tempDirectoryPath);
 
-        // Not using tools like FileUtils.deleteDirectory
-        // because they failed with non existing symbolic links
-        delete(directory);
-
-        if (!directory.mkdir()) {
-            logger.error("Unable to create " + configurationDirectory + " directory.");
-            return;
+        if (temporary_directory.exists()) {
+        	logger.info("A old restore working dir exists, cleaning ...");
+        	try {
+				FileUtils.deleteDirectory(temporary_directory);
+			} catch (IOException e) {
+				logger.error("Unable to delete " + tempDirectoryPath);
+				e.printStackTrace(logger.getWriter());
+				return;
+			}
         }
-
+        temporary_directory.mkdir();
+        
         File archive = new File(fileName);
 
         logger.info("Uncompressing archive file...");
         UnArchiver unAchiver = CompressionMethodEnum.ZIP.getUnArchiver();
 
         try {
-			unAchiver.unArchive(archive, configurationDirectory);
+			unAchiver.unArchive(archive, tempDirectoryPath);
 		} catch (Exception e) {
 			logger.error("Error uncompressiong archive.");
 			logger.error("Look to hudson global logs for more informations.");
 		}
         
+        // Not using tools like FileUtils.deleteDirectory
+        // because it is failing with non existing symbolic links
+        logger.info("Removing old configuration files...");
+        delete(directory);
+
+        logger.info("Making temporary directory the hudson home...");
+        temporary_directory.renameTo(directory); 
+		
 		logger.info("*****************************************");
 		logger.info("Reloading hudson configuration from disk.");
 		logger.info("*****************************************");
