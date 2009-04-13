@@ -3,15 +3,13 @@ package org.jvnet.hudson.plugins.backup.utils.compress;
 import java.io.File;
 
 import org.apache.commons.io.FileUtils;
-import org.codehaus.plexus.archiver.tar.TarGZipUnArchiver;
-import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 
-public class TarGzipArchiverTest {
+public class TarBz2UnArchiverTest {
 	private final static String OUTPUT_DIRECTORY = "target";
 	private final static String UNCOMPRESS_DIRECTORY = OUTPUT_DIRECTORY
 			+ "/uncompress";
@@ -27,26 +25,23 @@ public class TarGzipArchiverTest {
 
 	@Before
 	public void tearUp() throws Exception {
-		archiveFile = new File(OUTPUT_DIRECTORY, "test.tar.gz");
+		archiveFile = new File(OUTPUT_DIRECTORY, "testzip.zip");
 
 		targetDirectory = new File(UNCOMPRESS_DIRECTORY);
 		targetDirectory.mkdir();
 	}
 
 	@Test
-	public void testArchiver() throws Exception {
-		TarGzipArchiver archiver = new TarGzipArchiver();
+	public void testUnArchiver() throws Exception {
+		// TODO use java zip API
+		TarBz2Archiver archiver = new TarBz2Archiver();
 		archiver.init(archiveFile);
 
 		ArchiverTestUtil.addTestFiles(archiver);
 		
-		TarGZipUnArchiver unarchiver = new TarGZipUnArchiver();
-		unarchiver.setSourceFile(archiveFile);
-
-		unarchiver.setDestDirectory(targetDirectory);
-		unarchiver.enableLogging(new ConsoleLogger(ConsoleLogger.LEVEL_DEBUG,
-				"Logger"));
-		unarchiver.extract();
+		TarBz2UnArchiver unarchiver = new TarBz2UnArchiver();
+		
+		unarchiver.unArchive(archiveFile, targetDirectory.getAbsolutePath());
 
 		Assert.assertTrue(ArchiverTestUtil.compareDirectoryContent(new File(Thread
 				.currentThread().getContextClassLoader().getResource("data")
@@ -59,5 +54,4 @@ public class TarGzipArchiverTest {
 		archiveFile.delete();
 		FileUtils.deleteDirectory(targetDirectory);
 	}
-
 }

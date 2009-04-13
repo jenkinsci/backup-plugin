@@ -3,7 +3,7 @@ package org.jvnet.hudson.plugins.backup.utils.compress;
 import java.io.File;
 
 import org.apache.commons.io.FileUtils;
-import org.codehaus.plexus.archiver.tar.TarGZipUnArchiver;
+import org.codehaus.plexus.archiver.tar.TarBZip2UnArchiver;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.junit.After;
 import org.junit.Assert;
@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class TarGzipArchiverTest {
+public class TarBz2ArchiverTest {
 	private final static String OUTPUT_DIRECTORY = "target";
 	private final static String UNCOMPRESS_DIRECTORY = OUTPUT_DIRECTORY
 			+ "/uncompress";
@@ -35,12 +35,12 @@ public class TarGzipArchiverTest {
 
 	@Test
 	public void testArchiver() throws Exception {
-		TarGzipArchiver archiver = new TarGzipArchiver();
+		TarBz2Archiver archiver = new TarBz2Archiver();
 		archiver.init(archiveFile);
 
 		ArchiverTestUtil.addTestFiles(archiver);
 		
-		TarGZipUnArchiver unarchiver = new TarGZipUnArchiver();
+		TarBZip2UnArchiver unarchiver = new TarBZip2UnArchiver();
 		unarchiver.setSourceFile(archiveFile);
 
 		unarchiver.setDestDirectory(targetDirectory);
