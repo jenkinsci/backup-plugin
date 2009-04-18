@@ -49,6 +49,17 @@ public class BackupLink extends ManagementLink {
         return Messages.description();
     }
 
+    public boolean doBackupDirectoryCheck(StaplerRequest req, StaplerResponse rsp) {
+
+        return false;
+    }
+
+    public void doSaveSettings(StaplerRequest res, StaplerResponse rsp) throws IOException {
+        Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
+        rsp.sendRedirect("/backup");        
+    }
+
+
     /**
      * Checks if the backup filename entered is valid or not
      */

@@ -1,0 +1,23 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+  <l:layout permission="${app.ADMINISTER}" norefresh="true">
+    <st:include it="${app}" page="sidepanel.jelly" />
+    <l:main-panel>
+          <h1>
+            <img src="${it.iconFileName}" alt=""/>
+            ${%backup.title}
+          </h1>
+          
+		<f:form method="post" action="saveSettings">
+    	    <f:section title="${%backup.settings.title}">
+				<st:include page="globalform.jelly"/>
+    	    	<f:entry title="${%backup.directory.title}" help="${rootURL}/plugin/backup/help_backup_directory.html">
+    	    		<f:textbox name="backupDirectoryPath" checkUrl="'backupDirectoryCheck?backupDirectoryPath='+escape(this.value)"/>
+    	    	</f:entry>
+    	    	<f:entry>
+					<f:submit value="${%backup.settings.save}"/>
+				</f:entry>
+			</f:section>
+		</f:form>
+	</l:main-panel>
+</l:layout>
+</j:jelly>
