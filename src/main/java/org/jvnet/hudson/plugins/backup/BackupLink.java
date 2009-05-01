@@ -3,31 +3,39 @@ package org.jvnet.hudson.plugins.backup;
 import hudson.model.Hudson;
 import hudson.model.ManagementLink;
 import hudson.util.FormFieldValidator;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.concurrent.Executors;
-import java.util.logging.Logger;
-
-import javax.servlet.ServletException;
-
 import org.apache.commons.lang.StringUtils;
-import org.jvnet.hudson.plugins.backup.utils.BackupTask;
+import org.jvnet.hudson.plugins.backup.utils.BackupPersistence;
 import org.jvnet.hudson.plugins.backup.utils.BackupPluginTask;
+import org.jvnet.hudson.plugins.backup.utils.BackupTask;
 import org.jvnet.hudson.plugins.backup.utils.RestoreTask;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
 import org.kohsuke.stapler.framework.io.LargeText;
 
+import javax.servlet.ServletException;
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.logging.Logger;
+
 public class BackupLink extends ManagementLink {
     private final static Logger LOGGER = Logger.getLogger(BackupLink.class
             .getName());
 
+    private static BackupLink instance;
+
     private BackupPluginTask task;
     private boolean fileNameOk = false;
 
-    public BackupLink() {
+    private BackupLink() {
+    }
+
+    public static BackupLink getInstance() {
+        if (instance == null) {
+            instance = new BackupLink();
+        }
+        return instance;
     }
 
     @Override
@@ -54,11 +62,23 @@ public class BackupLink extends ManagementLink {
         return false;
     }
 
-    public void doSaveSettings(StaplerRequest res, StaplerResponse rsp) throws IOException {
+    public void doSaveSettings(StaplerRequest res, StaplerResponse rsp, @QueryParameter("backupDirectoryPath") String backupPath
+            , @QueryParameter("verbose") boolean verbose) throws IOException {
         Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
-        rsp.sendRedirect("/backup");        
+
+        BackupConfig configuration = new BackupConfig();
+
+        configuration.setTargetDirectory(backupPath);
+        configuration.setVerbose(verbose);
+
+        BackupPluginImpl.getInstance().setConfiguration(configuration);        
+
+        LOGGER.info("Backup configuration saved.");
+
+        rsp.sendRedirect("/backup");
     }
 
+    
 
     /**
      * Checks if the backup filename entered is valid or not
@@ -198,7 +218,6 @@ public class BackupLink extends ManagementLink {
     /**
      * Show restore status.
      * When restore is done, reload config from disk via {@link Hudson#doReload(StaplerRequest, StaplerResponse)}
-     * 
      */
     public void doProgressiveRestoreLog(StaplerRequest req, StaplerResponse rsp)
             throws IOException {
