@@ -67,13 +67,14 @@ public class BackupLink extends ManagementLink {
     }
 
     public void doSaveSettings(StaplerRequest res, StaplerResponse rsp, @QueryParameter("backupDirectoryPath") String backupPath
-            , @QueryParameter("verbose") boolean verbose) throws IOException {
+            , @QueryParameter("verbose") boolean verbose, @QueryParameter("fileNameTemplate") String fileNameTemplate) throws IOException {
         Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
 
         BackupConfig configuration = new BackupConfig();
 
         configuration.setTargetDirectory(backupPath);
         configuration.setVerbose(verbose);
+        configuration.setFileNameTemplate(fileNameTemplate);
 
         BackupPluginImpl.getInstance().setConfiguration(configuration);        
 

@@ -18,6 +18,9 @@
     	    	<f:entry title="${%backup.directory.title}" help="${rootURL}/plugin/backup/help_backup_directory.html">
     	    		<f:textbox value="${it.configuration.targetDirectory}" name="backupDirectoryPath" checkUrl="'backupDirectoryCheck?backupDirectoryPath='+escape(this.value)"/>
     	    	</f:entry>
+                <f:entry title="${%backup.fileNameTemplate.title}" help="${rootURL}/plugin/backup/help_backup_filenametemplate.html">
+                    <f:textbox value="${it.configuration.fileNameTemplate}" name="fileNameTemplate"/>
+                </f:entry>
     	    	<f:entry>
 					<f:submit value="${%backup.settings.save}"/>
 				</f:entry>
