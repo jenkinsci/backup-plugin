@@ -38,6 +38,10 @@ public class BackupLink extends ManagementLink {
         return instance;
     }
 
+    public BackupConfig getConfiguration() {
+        return BackupPluginImpl.getInstance().getConfiguration();
+    }
+
     @Override
     public String getIconFileName() {
         return "/plugin/backup/images/backup-48x48.png";
