@@ -21,7 +21,7 @@ public enum FileNamePatternEnum {
         }},
     EXTENSION("extension") {
         public String replace(String template, BackupConfig configuration) {
-            return template.replace(getFullPattern(pattern), "." + configuration.getArchiveType().getCode());
+            return template.replace(getFullPattern(pattern), configuration.getArchiveType().getCode());
 
         }};
 
