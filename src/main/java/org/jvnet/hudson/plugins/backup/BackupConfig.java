@@ -9,7 +9,7 @@ import org.jvnet.hudson.plugins.backup.utils.compress.CompressionMethodEnum;
  * Time: 11:35:57 PM
  */
 public class BackupConfig {
-    private final static String DEFAULT_FILE_NAME_TEMPLATE = "backup_yyyyMMdd_HHmm";
+    private final static String DEFAULT_FILE_NAME_TEMPLATE = "backup_@date@.@extension@";
     private final static CompressionMethodEnum DEFAULT_COMPRESSION_METHOD = CompressionMethodEnum.ZIP;
 
     private String targetDirectory;

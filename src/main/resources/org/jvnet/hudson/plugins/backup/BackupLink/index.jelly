@@ -1,17 +1,22 @@
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
-  <l:layout permission="${app.ADMINISTER}" norefresh="true">
-    <st:include it="${app}" page="sidepanel.jelly" />
-    <l:main-panel>
-          <h1>
-            <img src="${it.iconFileName}" alt=""/>
-            ${it.displayName}
-          </h1>
-          
-	            <h2><A href="configurebackup">${%backup.title}</A></h2>
-	            <h2><A href="configurerestore">${%restore.title}</A></h2>
-	            <br/>
-	            <h2><A href="backupsettings">${%configuration.title}</A></h2>
-	    	
-	</l:main-panel>
-  </l:layout>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
+         xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+    <l:layout permission="${app.ADMINISTER}" norefresh="true">
+        <st:include it="${app}" page="sidepanel.jelly"/>
+        <l:main-panel>
+            <h1>
+                <img src="${it.iconFileName}" alt=""/>
+                ${it.displayName}
+            </h1>
+
+            <h2><A href="configurebackup">${%backup.title}</A></h2>
+
+            <h2><A href="configurerestore">${%restore.title}</A></h2>
+            <br/>
+
+            <h2><A href="launchBackup">${%backup.title}</A></h2>
+            <h2><A href="backupsettings">${%configuration.title}</A></h2>
+
+
+        </l:main-panel>
+    </l:layout>
 </j:jelly>

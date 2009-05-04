@@ -4,10 +4,10 @@ import hudson.model.Hudson;
 import hudson.model.ManagementLink;
 import hudson.util.FormFieldValidator;
 import org.apache.commons.lang.StringUtils;
-import org.jvnet.hudson.plugins.backup.utils.BackupPersistence;
 import org.jvnet.hudson.plugins.backup.utils.BackupPluginTask;
 import org.jvnet.hudson.plugins.backup.utils.BackupTask;
 import org.jvnet.hudson.plugins.backup.utils.RestoreTask;
+import org.jvnet.hudson.plugins.backup.utils.filename.FileNameManager;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
@@ -18,6 +18,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class BackupLink extends ManagementLink {
     private final static Logger LOGGER = Logger.getLogger(BackupLink.class
@@ -66,6 +68,32 @@ public class BackupLink extends ManagementLink {
         return false;
     }
 
+    public void doLaunchBackup(StaplerRequest res, StaplerResponse rsp) throws IOException {
+        Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
+
+        BackupConfig configuration = getConfiguration();
+
+        String fileNameTemplate = configuration.getTargetDirectory() + File.separator +  configuration.getFileNameTemplate();
+
+        String fileName = new FileNameManager().getFileName(fileNameTemplate, configuration);
+        LOGGER.info("backup file name = " + fileNameTemplate + " (generated from template :" + fileNameTemplate + ")");
+        // configuring backup
+        task = new BackupTask();
+
+        // TODO Backup task have to take a backup configuration in parameter
+        task.setVerbose(configuration.isVerbose());
+        task.setLogFileName(getBackupLogFile().getAbsolutePath());
+        task.setFileName(fileName);
+        task.setConfigurationDirectory(getRootDirectory());
+
+        // Launching the task
+        Thread thread = Executors.defaultThreadFactory().newThread(task);
+        thread.start();
+
+        // redirect to observation page
+        rsp.sendRedirect("backup");
+    }
+
     public void doSaveSettings(StaplerRequest res, StaplerResponse rsp, @QueryParameter("backupDirectoryPath") String backupPath
             , @QueryParameter("verbose") boolean verbose, @QueryParameter("fileNameTemplate") String fileNameTemplate) throws IOException {
         Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
@@ -76,14 +104,13 @@ public class BackupLink extends ManagementLink {
         configuration.setVerbose(verbose);
         configuration.setFileNameTemplate(fileNameTemplate);
 
-        BackupPluginImpl.getInstance().setConfiguration(configuration);        
+        BackupPluginImpl.getInstance().setConfiguration(configuration);
 
         LOGGER.info("Backup configuration saved.");
 
         rsp.sendRedirect("/backup");
     }
 
-    
 
     /**
      * Checks if the backup filename entered is valid or not

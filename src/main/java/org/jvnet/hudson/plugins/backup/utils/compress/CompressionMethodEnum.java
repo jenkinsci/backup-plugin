@@ -6,7 +6,7 @@ package org.jvnet.hudson.plugins.backup.utils.compress;
  */
 public enum CompressionMethodEnum {
     ZIP("zip", ZipArchiver.class, ZipUnArchiver.class),
-    TARGZIP("tgz", TarGzipArchiver.class, TarGzipUnArchiver.class),
+    TARGZIP("tar.gz", TarGzipArchiver.class, TarGzipUnArchiver.class),
     TARBZ2("tar.bz2", TarBz2Archiver.class, TarBz2UnArchiver.class);
 
     private final String code;
