@@ -31,7 +31,7 @@ public class BackupEngine extends DirectoryWalker {
 	private Archiver archiver;
 
 	public BackupEngine(BackupLogger logger, String sourceDirectory,
-			String targetName, FileFilter filter) throws BackupException {
+			String targetName, Archiver archiver, FileFilter filter) throws BackupException {
 		super(filter, -1);
 		this.logger = logger;
 		this.source = new File(sourceDirectory);
@@ -40,8 +40,7 @@ public class BackupEngine extends DirectoryWalker {
 		File targetFile = new File(targetName);
 		logger.info("Full backup file name : " + targetFile.getAbsolutePath());
 		
-		// TODO parameterized this
-		archiver = CompressionMethodEnum.ZIP.getArchiver();
+		this.archiver = archiver;
 		
 		try {
 			archiver.init(targetFile);

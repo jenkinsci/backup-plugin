@@ -15,7 +15,7 @@ public class BackupConfig {
     private String targetDirectory;
     private boolean verbose;
     private String fileNameTemplate = DEFAULT_FILE_NAME_TEMPLATE;
-    private CompressionMethodEnum archiveType = CompressionMethodEnum.ZIP;
+    private CompressionMethodEnum archiveType = CompressionMethodEnum.TARGZIP;
 
     public boolean isVerbose() {
         return verbose;

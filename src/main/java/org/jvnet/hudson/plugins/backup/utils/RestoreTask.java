@@ -14,6 +14,7 @@ import javax.servlet.ServletContext;
 import org.apache.commons.io.FileUtils;
 import org.jvnet.hudson.plugins.backup.utils.compress.CompressionMethodEnum;
 import org.jvnet.hudson.plugins.backup.utils.compress.UnArchiver;
+import org.jvnet.hudson.plugins.backup.BackupConfig;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
 
@@ -33,28 +34,30 @@ public class RestoreTask extends BackupPluginTask {
      */
     private ServletContext servletContext;
     
-    public RestoreTask(ServletContext servletContext) {
+    public RestoreTask(BackupConfig configuration, String hudsonWorkDir, String backupFileName,
+                       String logFilePath, ServletContext servletContext) {
+        super(configuration, hudsonWorkDir, backupFileName, logFilePath);
     	this.servletContext = servletContext;
     }
     
     public void run() {
-        assert (logFileName != null);
-        assert (fileName != null);
+        assert (logFilePath != null);
+        assert (backupFileName != null);
 
         startDate = new Date();
         try {
-            logger = new BackupLogger(logFileName, verbose);
+            logger = new BackupLogger(logFilePath, configuration.isVerbose());
         } catch (IOException e) {
             LOGGER.severe("Unable to open log file for writing : "
-                    + logFileName);
+                    + logFilePath);
             return;
         }
 
         logger.info("Restore started at " + getTimestamp(startDate));
 
-        File directory = new File(configurationDirectory);
+        File directory = new File(hudsonWorkDir);
         
-        String tempDirectoryPath = configurationDirectory + "_restore";
+        String tempDirectoryPath = hudsonWorkDir + "_restore";
         logger.info("Working into " + tempDirectoryPath + " directory");
         
         File temporary_directory = new File(tempDirectoryPath);
@@ -71,10 +74,10 @@ public class RestoreTask extends BackupPluginTask {
         }
         temporary_directory.mkdir();
         
-        File archive = new File(fileName);
+        File archive = new File(backupFileName);
 
         logger.info("Uncompressing archive file...");
-        UnArchiver unAchiver = CompressionMethodEnum.ZIP.getUnArchiver();
+        UnArchiver unAchiver = configuration.getArchiveType().getUnArchiver();
 
         try {
 			unAchiver.unArchive(archive, tempDirectoryPath);
@@ -125,7 +128,7 @@ public class RestoreTask extends BackupPluginTask {
                 delete(files[i]);
             }
         }
-        if (verbose) {
+        if (configuration.isVerbose()) {
             logger.debug("Deleting " + file.getAbsolutePath());
         }
         file.delete();

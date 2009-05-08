@@ -76,15 +76,9 @@ public class BackupLink extends ManagementLink {
         String fileNameTemplate = configuration.getTargetDirectory() + File.separator +  configuration.getFileNameTemplate();
 
         String fileName = new FileNameManager().getFileName(fileNameTemplate, configuration);
-        LOGGER.info("backup file name = " + fileNameTemplate + " (generated from template :" + fileNameTemplate + ")");
+        LOGGER.info("backup file name = " + fileName + " (generated from template :" + fileNameTemplate + ")");
         // configuring backup
-        task = new BackupTask();
-
-        // TODO Backup task have to take a backup configuration in parameter
-        task.setVerbose(configuration.isVerbose());
-        task.setLogFileName(getBackupLogFile().getAbsolutePath());
-        task.setFileName(fileName);
-        task.setConfigurationDirectory(getRootDirectory());
+        task = new BackupTask(configuration, getRootDirectory(), fileName, getBackupLogFile().getAbsolutePath());
 
         // Launching the task
         Thread thread = Executors.defaultThreadFactory().newThread(task);
@@ -199,12 +193,12 @@ public class BackupLink extends ManagementLink {
         }
 
         // configuring backup
-        task = new BackupTask();
+       // task = new BackupTask();
 
-        task.setVerbose(verbose);
-        task.setLogFileName(getBackupLogFile().getAbsolutePath());
-        task.setFileName(fileName);
-        task.setConfigurationDirectory(getRootDirectory());
+        //task.setVerbose(verbose);
+        //task.setLogFileName(getBackupLogFile().getAbsolutePath());
+        //task.setFileName(fileName);
+        //task.setConfigurationDirectory(getRootDirectory());
 
         // Launching the task
         Thread thread = Executors.defaultThreadFactory().newThread(task);
@@ -224,7 +218,7 @@ public class BackupLink extends ManagementLink {
             rsp.sendRedirect("configurerestore");
             return;
         }
-
+             /*
         // Configuring Restore task
         task = new RestoreTask(req.getServletContext());
 
@@ -232,7 +226,7 @@ public class BackupLink extends ManagementLink {
         task.setVerbose(verbose);
         task.setLogFileName(getRestoreLogFile().getAbsolutePath());
         task.setConfigurationDirectory(getRootDirectory());
-
+               */
         // Launching the task
         Thread thread = Executors.defaultThreadFactory().newThread(task);
         thread.start();
