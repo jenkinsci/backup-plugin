@@ -8,14 +8,12 @@
                 ${it.displayName}
             </h1>
 
-            <h2><A href="configurebackup">${%backup.title}</A></h2>
-
-            <h2><A href="configurerestore">${%restore.title}</A></h2>
-            <br/>
-
-            <h2><A href="launchBackup">${%backup.title}</A></h2>
-            <h2><A href="launchrestore">${%restore.title}</A></h2>
-            <h2><A href="backupsettings">${%configuration.title}</A></h2>
+            ${it.configuration.targetDirectory}
+            <br></br>
+            Files :
+            <j:forEach var="t" items="${it.listFiles}">
+                ${t.name}<br/>
+            </j:forEach>
 
 
         </l:main-panel>

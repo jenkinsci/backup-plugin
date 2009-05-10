@@ -6,7 +6,6 @@ import hudson.util.FormFieldValidator;
 import org.apache.commons.lang.StringUtils;
 import org.jvnet.hudson.plugins.backup.utils.BackupPluginTask;
 import org.jvnet.hudson.plugins.backup.utils.BackupTask;
-import org.jvnet.hudson.plugins.backup.utils.RestoreTask;
 import org.jvnet.hudson.plugins.backup.utils.filename.FileNameManager;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
@@ -18,8 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
-import java.util.Date;
-import java.text.SimpleDateFormat;
 
 public class BackupLink extends ManagementLink {
     private final static Logger LOGGER = Logger.getLogger(BackupLink.class
@@ -73,7 +70,7 @@ public class BackupLink extends ManagementLink {
 
         BackupConfig configuration = getConfiguration();
 
-        String fileNameTemplate = configuration.getTargetDirectory() + File.separator +  configuration.getFileNameTemplate();
+        String fileNameTemplate = configuration.getTargetDirectory() + File.separator + configuration.getFileNameTemplate();
 
         String fileName = new FileNameManager().getFileName(fileNameTemplate, configuration);
         LOGGER.info("backup file name = " + fileName + " (generated from template :" + fileNameTemplate + ")");
@@ -86,6 +83,19 @@ public class BackupLink extends ManagementLink {
 
         // redirect to observation page
         rsp.sendRedirect("backup");
+    }
+
+    /** search into the declared backup directory for backup archives */
+    public File[] listFiles() throws IOException {
+        LOGGER.info("Listing files of " + getConfiguration().getTargetDirectory());
+        Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
+
+        BackupConfig configuration = getConfiguration();
+
+        File backupDirectory = new File(configuration.getTargetDirectory());
+        File[] backupFiles = backupDirectory.listFiles();
+
+        return backupFiles;
     }
 
     public void doSaveSettings(StaplerRequest res, StaplerResponse rsp, @QueryParameter("backupDirectoryPath") String backupPath
@@ -193,7 +203,7 @@ public class BackupLink extends ManagementLink {
         }
 
         // configuring backup
-       // task = new BackupTask();
+        // task = new BackupTask();
 
         //task.setVerbose(verbose);
         //task.setLogFileName(getBackupLogFile().getAbsolutePath());
@@ -218,15 +228,15 @@ public class BackupLink extends ManagementLink {
             rsp.sendRedirect("configurerestore");
             return;
         }
-             /*
-        // Configuring Restore task
-        task = new RestoreTask(req.getServletContext());
+        /*
+ // Configuring Restore task
+ task = new RestoreTask(req.getServletContext());
 
-        task.setFileName(fileName);
-        task.setVerbose(verbose);
-        task.setLogFileName(getRestoreLogFile().getAbsolutePath());
-        task.setConfigurationDirectory(getRootDirectory());
-               */
+ task.setFileName(fileName);
+ task.setVerbose(verbose);
+ task.setLogFileName(getRestoreLogFile().getAbsolutePath());
+ task.setConfigurationDirectory(getRootDirectory());
+        */
         // Launching the task
         Thread thread = Executors.defaultThreadFactory().newThread(task);
         thread.start();
