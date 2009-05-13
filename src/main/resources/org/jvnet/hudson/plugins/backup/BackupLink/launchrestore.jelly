@@ -8,10 +8,11 @@
                 ${it.displayName}
             </h1>
 
-            ${it.configuration.targetDirectory}
-            <br></br>
-            Files :
-            <j:forEach var="t" items="${it.listFiles}">
+            <h2>
+                ${%restore.availablefiles.title} ${it.configuration.targetDirectory}
+            </h2>
+            <j:forEach var="t" items="${it.fileList}">
+
                 ${t.name}<br/>
             </j:forEach>
 

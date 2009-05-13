@@ -86,7 +86,7 @@ public class BackupLink extends ManagementLink {
     }
 
     /** search into the declared backup directory for backup archives */
-    public File[] listFiles() throws IOException {
+    public File[] getFileList() throws IOException {
         LOGGER.info("Listing files of " + getConfiguration().getTargetDirectory());
         Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
 
