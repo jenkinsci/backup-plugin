@@ -15,6 +15,9 @@ import org.kohsuke.stapler.framework.io.LargeText;
 import javax.servlet.ServletException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
@@ -85,8 +88,10 @@ public class BackupLink extends ManagementLink {
         rsp.sendRedirect("backup");
     }
 
-    /** search into the declared backup directory for backup archives */
-    public File[] getFileList() throws IOException {
+    /**
+     * search into the declared backup directory for backup archives
+     */
+    public List<File> getFileList() throws IOException {
         LOGGER.info("Listing files of " + getConfiguration().getTargetDirectory());
         Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
 
@@ -95,7 +100,14 @@ public class BackupLink extends ManagementLink {
         File backupDirectory = new File(configuration.getTargetDirectory());
         File[] backupFiles = backupDirectory.listFiles();
 
-        return backupFiles;
+        List fileList;
+        if (backupFiles == null) {
+            fileList = new ArrayList();
+        } else {
+            fileList = Arrays.asList(backupFiles);
+        }
+
+        return fileList;
     }
 
     public void doSaveSettings(StaplerRequest res, StaplerResponse rsp, @QueryParameter("backupDirectoryPath") String backupPath

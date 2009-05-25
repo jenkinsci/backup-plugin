@@ -9,21 +9,30 @@
             </h1>
 
             <h2>
-                ${%restore.availablefiles.title} ${it.configuration.targetDirectory}
+                ${%restore.availablefiles.title} ${it.configuration.targetDirectory} :
             </h2>
 
-            <f:form method="post" action="restoreFile">
-                <table>
-                    <j:forEach var="t" items="${it.fileList}">
-                        <tr valign="center">
-                            <td>
-                                <f:radio name="file" value="${t.name}"/>${t.name}
-                           </td>
+            <j:set var="fileListSize" value="${it.fileList.isEmpty()}"/>
+            <j:if test="${fileListSize == true}">
+                <h3>${%restore.filelist.empty}</h3>
+            </j:if>
+            <j:if test="${fileListSize == false}">
+
+                <f:form method="post" action="restoreFile">
+                    <table>
+                        <j:forEach var="t" items="${it.fileList}">
+                            <tr valign="center">
+                                <td>
+                                    <f:radio name="file" value="${t.name}"/>${t.name}
+                                </td>
+                            </tr>
+                        </j:forEach>
+                        <tr>
+                            <td><f:submit value="${%restore.launch}"/></td>
                         </tr>
-                    </j:forEach>
-                    <tr><td><f:submit value="${%restore.launch}"/></td></tr>
-                </table>
-            </f:form>
+                    </table>
+                </f:form>
+            </j:if>
         </l:main-panel>
     </l:layout>
 </j:jelly>
