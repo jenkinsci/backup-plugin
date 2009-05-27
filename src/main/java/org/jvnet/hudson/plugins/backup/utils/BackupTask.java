@@ -2,11 +2,13 @@ package org.jvnet.hudson.plugins.backup.utils;
 
 import hudson.model.Computer;
 import hudson.model.Hudson;
+import hudson.security.ACL;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.NameFileFilter;
 import org.apache.commons.io.filefilter.NotFileFilter;
 import org.jvnet.hudson.plugins.backup.BackupConfig;
 import org.jvnet.hudson.plugins.backup.BackupException;
+import org.acegisecurity.context.SecurityContextHolder;
 
 import java.io.FileFilter;
 import java.io.IOException;
@@ -37,6 +39,8 @@ public class BackupTask extends BackupPluginTask {
         assert (logFilePath != null);
         assert (configuration.getFileNameTemplate() != null);
 
+        SecurityContextHolder.getContext().setAuthentication(ACL.SYSTEM);
+        
         startDate = new Date();
         try {
             logger = new BackupLogger(logFilePath, configuration.isVerbose());
