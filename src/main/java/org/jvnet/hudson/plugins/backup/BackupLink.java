@@ -3,9 +3,11 @@ package org.jvnet.hudson.plugins.backup;
 import hudson.model.Hudson;
 import hudson.model.ManagementLink;
 import hudson.util.FormFieldValidator;
+import hudson.util.FormValidation;
 import org.apache.commons.lang.StringUtils;
 import org.jvnet.hudson.plugins.backup.utils.BackupPluginTask;
 import org.jvnet.hudson.plugins.backup.utils.BackupTask;
+import org.jvnet.hudson.plugins.backup.utils.RestoreTask;
 import org.jvnet.hudson.plugins.backup.utils.filename.FileNameManager;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
@@ -87,6 +89,30 @@ public class BackupLink extends ManagementLink {
         // redirect to observation page
         rsp.sendRedirect("backup");
     }
+
+    public void doRestoreFile(StaplerRequest res, StaplerResponse rsp,
+                              @QueryParameter("file") String backupFile)
+            throws IOException {
+        Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
+
+        BackupConfig configuration = getConfiguration();
+
+        String path = configuration.getTargetDirectory();
+        String filePath = path + File.separator + backupFile;
+
+        LOGGER.info("Selected file : " + backupFile);
+
+        task = new RestoreTask(configuration, Hudson.getInstance().getRootDir().getAbsolutePath(),
+                filePath, getBackupLogFile().getAbsolutePath(), res.getServletContext());
+
+        // Launching the restoration
+        Thread thread = Executors.defaultThreadFactory().newThread(task);
+        thread.start();
+
+        // redirect to observation page
+        rsp.sendRedirect("restore");
+    }
+
 
     /**
      * search into the declared backup directory for backup archives
