@@ -103,7 +103,7 @@ public class BackupLink extends ManagementLink {
         LOGGER.info("Selected file : " + backupFile);
 
         task = new RestoreTask(configuration, Hudson.getInstance().getRootDir().getAbsolutePath(),
-                filePath, getBackupLogFile().getAbsolutePath(), res.getServletContext());
+                filePath, getRestoreLogFile().getAbsolutePath(), res.getServletContext());
 
         // Launching the restoration
         Thread thread = Executors.defaultThreadFactory().newThread(task);
