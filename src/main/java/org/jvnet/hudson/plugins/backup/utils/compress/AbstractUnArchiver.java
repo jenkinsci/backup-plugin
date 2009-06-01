@@ -3,6 +3,7 @@ package org.jvnet.hudson.plugins.backup.utils.compress;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import org.apache.commons.io.FileUtils;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
@@ -38,7 +39,7 @@ public abstract class AbstractUnArchiver implements UnArchiver {
 		} catch (org.codehaus.plexus.archiver.ArchiverException e) {
 			String message = "Unable to extract " + archive.getAbsolutePath() + " content to " +
 			toDir;
-			LOGGER.severe(message);
+			LOGGER.log(Level.SEVERE, message, e);
 			throw new ArchiverException(message, e);
 		} catch (Exception e) {
 			e.printStackTrace();

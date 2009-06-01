@@ -16,6 +16,9 @@ public class ArchiverTestUtil {
 		archiver.addFile("dir1/file2", new File(Thread.currentThread()
 				.getContextClassLoader().getResource("data/dir1/file2")
 				.getFile()));
+        archiver.addFile("dir$dollar/file$dollar.txt", new File(Thread.currentThread()
+                .getContextClassLoader().getResource("data/dir$dollar/file$dollar.txt")
+                .getFile()));
 
 		archiver.close();
 	}
