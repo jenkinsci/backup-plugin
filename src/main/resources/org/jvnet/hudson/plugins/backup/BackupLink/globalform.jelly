@@ -1,8 +1,0 @@
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt">
-	<f:entry title="${%root.directory.title}">
-		${it.rootDirectory}
-	</f:entry>
-	<f:entry title="${%verbose.title}" help="${rootURL}/plugin/backup/help_verbose.html">
-		<f:checkbox name="verbose"/>
-	</f:entry>
-</j:jelly>

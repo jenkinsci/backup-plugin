@@ -8,13 +8,10 @@
                 ${it.displayName}
             </h1>
 
-            <h2><A href="configurebackup">${%backup.title}</A></h2>
-
-            <h2><A href="configurerestore">${%restore.title}</A></h2>
-            <br/>
-
             <h2><A href="launchBackup">${%backup.title}</A></h2>
+
             <h2><A href="launchrestore">${%restore.title}</A></h2>
+
             <h2><A href="backupsettings">${%configuration.title}</A></h2>
 
 
