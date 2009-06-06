@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jvnet.hudson.plugins.backup.utils.BackupPluginTask;
 import org.jvnet.hudson.plugins.backup.utils.BackupTask;
 import org.jvnet.hudson.plugins.backup.utils.RestoreTask;
+import org.jvnet.hudson.plugins.backup.utils.LastModifiedFileComparator;
 import org.jvnet.hudson.plugins.backup.utils.compress.CompressionMethodEnum;
 import org.jvnet.hudson.plugins.backup.utils.filename.FileNameManager;
 import org.kohsuke.stapler.QueryParameter;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Collections;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
@@ -136,6 +138,9 @@ public class BackupLink extends ManagementLink {
         } else {
             fileList = Arrays.asList(backupFiles);
         }
+
+        // Sort file list
+        Collections.sort(fileList, new LastModifiedFileComparator());        
 
         return fileList;
     }
