@@ -50,5 +50,14 @@ public enum CompressionMethodEnum {
     public static UnArchiver getUnArchiver(CompressionMethodEnum method) {
     	return method.getUnArchiver();
     }
+
+    public static CompressionMethodEnum getFromCode(String code) {
+        for (CompressionMethodEnum value : CompressionMethodEnum.values()) {
+            if (value.code.equals(code)) {
+                return value;
+            }
+        }
+        throw new IllegalArgumentException("Unknown code " + code);
+    }
     
 }

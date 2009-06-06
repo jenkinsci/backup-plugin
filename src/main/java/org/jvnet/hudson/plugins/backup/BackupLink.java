@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jvnet.hudson.plugins.backup.utils.BackupPluginTask;
 import org.jvnet.hudson.plugins.backup.utils.BackupTask;
 import org.jvnet.hudson.plugins.backup.utils.RestoreTask;
+import org.jvnet.hudson.plugins.backup.utils.compress.CompressionMethodEnum;
 import org.jvnet.hudson.plugins.backup.utils.filename.FileNameManager;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
@@ -63,6 +64,14 @@ public class BackupLink extends ManagementLink {
     @Override
     public String getDescription() {
         return Messages.description();
+    }
+
+    public List<String> getExtensions() {
+        List<String> extensions = new ArrayList();
+        for (CompressionMethodEnum method : CompressionMethodEnum.values()) {
+            extensions.add(method.getCode());
+        }
+        return extensions;
     }
 
     public void doLaunchBackup(StaplerRequest res, StaplerResponse rsp) throws IOException {
@@ -131,8 +140,9 @@ public class BackupLink extends ManagementLink {
         return fileList;
     }
 
-    public void doSaveSettings(StaplerRequest res, StaplerResponse rsp, @QueryParameter("backupDirectoryPath") String backupPath
-            , @QueryParameter("verbose") boolean verbose, @QueryParameter("fileNameTemplate") String fileNameTemplate) throws IOException {
+    public void doSaveSettings(StaplerRequest res, StaplerResponse rsp, @QueryParameter("backupDirectoryPath") String backupPath,
+                               @QueryParameter("archive_format") String format, @QueryParameter("verbose") boolean verbose,
+                               @QueryParameter("fileNameTemplate") String fileNameTemplate) throws IOException {
         Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
 
         BackupConfig configuration = new BackupConfig();
@@ -140,6 +150,9 @@ public class BackupLink extends ManagementLink {
         configuration.setTargetDirectory(backupPath);
         configuration.setVerbose(verbose);
         configuration.setFileNameTemplate(fileNameTemplate);
+
+        CompressionMethodEnum archiveType = CompressionMethodEnum.getFromCode(format);
+        configuration.setArchiveType(archiveType);
 
         BackupPluginImpl.getInstance().setConfiguration(configuration);
 

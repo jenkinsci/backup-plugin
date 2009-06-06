@@ -1,31 +1,41 @@
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
-  <l:layout permission="${app.ADMINISTER}" norefresh="true">
-    <st:include it="${app}" page="sidepanel.jelly" />
-    <l:main-panel>
-          <h1>
-            <img src="${it.iconFileName}" alt=""/>
-            ${%backup.title}
-          </h1>
-          
-		<f:form method="post" action="saveSettings">
-    	    <f:section title="${%backup.settings.title}">
-                <f:entry title="${%backup.root.directory.title}">
-                    ${it.rootDirectory}
-                </f:entry>
-                <f:entry title="${%backup.verbose.title}" help="${rootURL}/plugin/backup/help_verbose.html">
-                    <f:checkbox checked="${it.configuration.verbose}" name="verbose"/>
-                </f:entry>
-    	    	<f:entry title="${%backup.directory.title}" help="${rootURL}/plugin/backup/help_backup_directory.html">
-    	    		<f:textbox value="${it.configuration.targetDirectory}" name="backupDirectoryPath"/>
-    	    	</f:entry>
-                <f:entry title="${%backup.fileNameTemplate.title}" help="${rootURL}/plugin/backup/help_backup_filenametemplate.html">
-                    <f:textbox value="${it.configuration.fileNameTemplate}" name="fileNameTemplate"/>
-                </f:entry>
-    	    	<f:entry>
-					<f:submit value="${%backup.settings.save}"/>
-				</f:entry>
-			</f:section>
-		</f:form>
-	</l:main-panel>
-</l:layout>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
+         xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+    <l:layout permission="${app.ADMINISTER}" norefresh="true">
+        <st:include it="${app}" page="sidepanel.jelly"/>
+        <l:main-panel>
+            <h1>
+                <img src="${it.iconFileName}" alt=""/>
+                ${%backup.title}
+            </h1>
+
+            <f:form method="post" action="saveSettings">
+                <f:section title="${%backup.settings.title}">
+                    <f:entry title="${%backup.root.directory.title}">
+                        ${it.rootDirectory}
+                    </f:entry>
+                    <f:entry title="${%backup.verbose.title}" help="${rootURL}/plugin/backup/help_verbose.html">
+                        <f:checkbox checked="${it.configuration.verbose}" name="verbose"/>
+                    </f:entry>
+                    <f:entry title="${%backup.directory.title}"
+                             help="${rootURL}/plugin/backup/help_backup_directory.html">
+                        <f:textbox value="${it.configuration.targetDirectory}" name="backupDirectoryPath"/>
+                    </f:entry>
+                    <f:entry title="${%backup.archivetype.title}">
+                        <select name="archive_format">
+                            <j:forEach var="value" items="${it.extensions}">
+                                <f:option selected="${it.configuration.archiveType.code==value}">${value}</f:option>
+                            </j:forEach>
+                        </select>
+                    </f:entry>
+                    <f:entry title="${%backup.fileNameTemplate.title}"
+                             help="${rootURL}/plugin/backup/help_backup_filenametemplate.html">
+                        <f:textbox value="${it.configuration.fileNameTemplate}" name="fileNameTemplate"/>
+                    </f:entry>
+                    <f:entry>
+                        <f:submit value="${%backup.settings.save}"/>
+                    </f:entry>
+                </f:section>
+            </f:form>
+        </l:main-panel>
+    </l:layout>
 </j:jelly>
