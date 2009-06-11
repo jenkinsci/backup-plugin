@@ -84,6 +84,7 @@ public class BackupTask extends BackupPluginTask {
         List<String> defaultExclusion = new ArrayList<String>();
 
         defaultExclusion.add("workspace");
+        defaultExclusion.add("backup.log");
 
         return defaultExclusion;
     }
