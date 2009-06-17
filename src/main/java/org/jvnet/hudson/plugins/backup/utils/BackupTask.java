@@ -32,7 +32,7 @@ public class BackupTask extends BackupPluginTask {
 
     public BackupTask(BackupConfig configuration, String hudsonWorkDir, String backupFileName, String logFilePath) {
         super(configuration, hudsonWorkDir, backupFileName, logFilePath);
-        exclusions.addAll(getDefaultsExclusions());
+        exclusions.addAll(getDefaultExclusions());
     }
 
     public void run() {
@@ -80,7 +80,7 @@ public class BackupTask extends BackupPluginTask {
         }
     }
 
-    public List<String> getDefaultsExclusions() {
+    public List<String> getDefaultExclusions() {
         List<String> defaultExclusion = new ArrayList<String>();
 
         defaultExclusion.add("workspace");
