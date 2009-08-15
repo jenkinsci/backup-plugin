@@ -2,20 +2,14 @@ package org.jvnet.hudson.plugins.backup.utils;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.zip.ZipEntry;
 
 import org.apache.commons.io.DirectoryWalker;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.input.AutoCloseInputStream;
 import org.jvnet.hudson.plugins.backup.BackupException;
 import org.jvnet.hudson.plugins.backup.utils.compress.Archiver;
 import org.jvnet.hudson.plugins.backup.utils.compress.ArchiverException;
-import org.jvnet.hudson.plugins.backup.utils.compress.CompressionMethodEnum;
 
 public class BackupEngine extends DirectoryWalker {
 	private BackupLogger logger;

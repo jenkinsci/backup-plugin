@@ -3,8 +3,8 @@ package org.jvnet.hudson.plugins.backup;
 import hudson.Plugin;
 import hudson.model.ManagementLink;
 
-import java.util.logging.Logger;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import org.jvnet.hudson.plugins.backup.utils.BackupPersistence;
 

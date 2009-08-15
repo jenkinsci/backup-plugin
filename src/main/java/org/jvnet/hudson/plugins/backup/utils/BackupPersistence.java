@@ -4,10 +4,8 @@ import hudson.XmlFile;
 import hudson.model.Hudson;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.FileNotFoundException;
-import java.util.List;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.jvnet.hudson.plugins.backup.BackupConfig;

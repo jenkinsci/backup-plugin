@@ -3,12 +3,6 @@ package org.jvnet.hudson.plugins.backup.utils;
 import hudson.model.Computer;
 import hudson.model.Hudson;
 import hudson.security.ACL;
-import org.apache.commons.io.filefilter.IOFileFilter;
-import org.apache.commons.io.filefilter.NameFileFilter;
-import org.apache.commons.io.filefilter.NotFileFilter;
-import org.jvnet.hudson.plugins.backup.BackupConfig;
-import org.jvnet.hudson.plugins.backup.BackupException;
-import org.acegisecurity.context.SecurityContextHolder;
 
 import java.io.FileFilter;
 import java.io.IOException;
@@ -16,6 +10,13 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.acegisecurity.context.SecurityContextHolder;
+import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.io.filefilter.NameFileFilter;
+import org.apache.commons.io.filefilter.NotFileFilter;
+import org.jvnet.hudson.plugins.backup.BackupConfig;
+import org.jvnet.hudson.plugins.backup.BackupException;
 
 /**
  * This is the backup task, run in background and log to a file

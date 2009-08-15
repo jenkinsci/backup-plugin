@@ -2,29 +2,26 @@ package org.jvnet.hudson.plugins.backup;
 
 import hudson.model.Hudson;
 import hudson.model.ManagementLink;
-import hudson.util.FormFieldValidator;
-import hudson.util.FormValidation;
-import org.apache.commons.lang.StringUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.logging.Logger;
+
 import org.jvnet.hudson.plugins.backup.utils.BackupPluginTask;
 import org.jvnet.hudson.plugins.backup.utils.BackupTask;
-import org.jvnet.hudson.plugins.backup.utils.RestoreTask;
 import org.jvnet.hudson.plugins.backup.utils.LastModifiedFileComparator;
+import org.jvnet.hudson.plugins.backup.utils.RestoreTask;
 import org.jvnet.hudson.plugins.backup.utils.compress.CompressionMethodEnum;
 import org.jvnet.hudson.plugins.backup.utils.filename.FileNameManager;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
 import org.kohsuke.stapler.framework.io.LargeText;
-
-import javax.servlet.ServletException;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Collections;
-import java.util.concurrent.Executors;
-import java.util.logging.Logger;
 
 public class BackupLink extends ManagementLink {
     private final static Logger LOGGER = Logger.getLogger(BackupLink.class

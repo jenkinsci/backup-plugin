@@ -1,9 +1,10 @@
 package org.jvnet.hudson.plugins.backup.utils.filename;
 
-import org.junit.Test;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 import org.jvnet.hudson.plugins.backup.BackupConfig;
 import org.jvnet.hudson.plugins.backup.utils.compress.CompressionMethodEnum;
 

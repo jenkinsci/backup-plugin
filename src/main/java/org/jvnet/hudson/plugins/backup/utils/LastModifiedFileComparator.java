@@ -1,7 +1,7 @@
 package org.jvnet.hudson.plugins.backup.utils;
 
-import java.util.Comparator;
 import java.io.File;
+import java.util.Comparator;
 
 /**
  * Compare two {@see java.io.File} by their modification date.

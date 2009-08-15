@@ -1,9 +1,9 @@
 package org.jvnet.hudson.plugins.backup.utils.filename;
 
-import org.jvnet.hudson.plugins.backup.BackupConfig;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.jvnet.hudson.plugins.backup.BackupConfig;
 
 /**
  * User: vsellier

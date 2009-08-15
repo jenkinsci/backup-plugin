@@ -1,6 +1,6 @@
 package org.jvnet.hudson.plugins.backup.utils.compress;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 

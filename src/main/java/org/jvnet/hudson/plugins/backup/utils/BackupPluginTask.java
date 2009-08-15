@@ -1,9 +1,9 @@
 package org.jvnet.hudson.plugins.backup.utils;
 
-import org.jvnet.hudson.plugins.backup.BackupConfig;
-
 import java.util.Date;
 import java.util.logging.Logger;
+
+import org.jvnet.hudson.plugins.backup.BackupConfig;
 
 /**
  * abstract class for backup or restore tasks
