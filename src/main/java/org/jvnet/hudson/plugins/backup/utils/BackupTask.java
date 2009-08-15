@@ -104,7 +104,7 @@ public class BackupTask extends BackupPluginTask {
         logger
                 .info("Setting hudson in shutdown mode to avoid files corruptions.");
         try {
-            Hudson.getInstance().doQuietDown(FakeObject.getStaplerResponseFake());
+            Hudson.getInstance().doQuietDown();
         } catch (Exception e) {
             logger.error("Erreur putting hudson in shutdown mode.");
             e.printStackTrace(logger.getWriter());
@@ -135,7 +135,7 @@ public class BackupTask extends BackupPluginTask {
     private void cancelNoJobs() {
         logger.info("Cancel hudson shutdown mode");
         try {
-            Hudson.getInstance().doCancelQuietDown(FakeObject.getStaplerResponseFake());
+            Hudson.getInstance().doCancelQuietDown();
         } catch (Exception e) {
             logger.error("Erreur cancelling hudson shutdown mode.");
             e.printStackTrace(logger.getWriter());
