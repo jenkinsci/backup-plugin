@@ -7,7 +7,6 @@ import hudson.security.ACL;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,11 +28,9 @@ public class BackupTask extends BackupPluginTask {
      */
     private final static Integer DELAY = 5000;
 
-    private List<String> exclusions = new ArrayList<String>();
 
     public BackupTask(BackupConfig configuration, String hudsonWorkDir, String backupFileName, String logFilePath) {
         super(configuration, hudsonWorkDir, backupFileName, logFilePath);
-        exclusions.addAll(getDefaultExclusions());
     }
 
     public void run() {
@@ -56,7 +53,7 @@ public class BackupTask extends BackupPluginTask {
         // Have to include shutdown time in backup time ?
         waitNoJobsInQueue();
 
-        FileFilter filter = createFileFilter(exclusions);
+        FileFilter filter = createFileFilter(configuration.getExclusions());
 
         try {
             BackupEngine backupEngine = new BackupEngine(logger,
@@ -81,14 +78,6 @@ public class BackupTask extends BackupPluginTask {
         }
     }
 
-    public List<String> getDefaultExclusions() {
-        List<String> defaultExclusion = new ArrayList<String>();
-
-        defaultExclusion.add("workspace");
-        defaultExclusion.add("backup.log");
-
-        return defaultExclusion;
-    }
 
     private FileFilter createFileFilter(List<String> exclusions) {
         // creating the filter

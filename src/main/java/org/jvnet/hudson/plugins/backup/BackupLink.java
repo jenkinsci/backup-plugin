@@ -157,6 +157,7 @@ public class BackupLink extends ManagementLink {
 
         CompressionMethodEnum archiveType = CompressionMethodEnum.getFromCode(format);
         configuration.setArchiveType(archiveType);
+        configuration.setExclusions(new ArrayList<String>());
 
         BackupPluginImpl.getInstance().setConfiguration(configuration);
 
