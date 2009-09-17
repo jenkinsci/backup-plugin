@@ -28,15 +28,13 @@
                              help="${rootURL}/plugin/backup/help_backup_filenametemplate.html">
                         <f:textbox value="${it.configuration.fileNameTemplate}" name="fileNameTemplate"/>
                     </f:entry>
-                    <f:entry title="${%backup.verbose.title}" help="${rootURL}/plugin/backup/help_verbose.html">
-                        <f:checkbox checked="${it.configuration.verbose}" name="verbose"/>
-                    </f:entry>
+                    <f:optionalBlock title="${%backup.verbose.title}" help="${rootURL}/plugin/backup/help_verbose.html"
+                         checked="${it.configuration.verbose}" name="verbose"/>
                 </f:section>
                 <f:section title="${%backup.content.title}">
-                    <f:entry title="${%backup.content.workspace}"
-                             help="${rootURL}/plugin/backup/help_backup_workspace.html">
-			                        <f:checkbox checked="${it.configuration.keepWorkspaces}" name="verbose"/>
-                    </f:entry>
+                    <f:optionalBlock title="${%backup.content.workspace}"
+                             help="${rootURL}/plugin/backup/help_backup_workspace.html"
+			                  checked="${it.configuration.keepWorkspaces}" name="verbose"/>
 
 				      <f:optionalBlock name="backup_buildHistory" title="${%backup.content.buildHistory}"
 				                       checked="${it.configuration.keepBuildHistory}" help="${rootURL}/plugin/backup/help_backup_build_history.html">
@@ -46,10 +44,9 @@
 				                   
 				        </f:entry>
 				      </f:optionalBlock>
-                    <f:entry title="${%backup.content.fingerprints}"
-                             help="${rootURL}/plugin/backup/help_backup_fingerprints.html">
-			                        <f:checkbox checked="${it.configuration.keepFingerprints}" name="verbose"/>
-                    </f:entry>
+                    <f:optionalBlock title="${%backup.content.fingerprints}"
+                             help="${rootURL}/plugin/backup/help_backup_fingerprints.html"
+			                 checked="${it.configuration.keepFingerprints}" name="verbose"/>
 				</f:section>
                     <f:entry>
                         <f:submit value="${%backup.settings.save}"/>
