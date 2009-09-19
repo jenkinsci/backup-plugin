@@ -7,6 +7,8 @@ import hudson.security.ACL;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +25,14 @@ import org.jvnet.hudson.plugins.backup.BackupException;
  * @author vsellier
  */
 public class BackupTask extends BackupPluginTask {
-    /**
+	private final static String WORKSPACE_NAME = "workspace";
+	private final static String FINGERPRINTS_NAME = "fingerprints";
+	private final static String BUILDS_NAME = "**/builds";
+	private final static String ARCHIVE_NAME = "**/archive";	
+	private final static String[] DEFAULT_EXCLUSIONS = { "backup.log" };
+
+	
+	/**
      * delay between two verification of no running processes
      */
     private final static Integer DELAY = 5000;
@@ -53,7 +62,24 @@ public class BackupTask extends BackupPluginTask {
         // Have to include shutdown time in backup time ?
         waitNoJobsInQueue();
 
-        FileFilter filter = createFileFilter(configuration.getExclusions());
+        // Creating exclusions
+        List<String> exclusions = new ArrayList<String>();
+    	exclusions.addAll(Arrays.asList(DEFAULT_EXCLUSIONS));
+    	exclusions.addAll(configuration.getCustomExclusions());
+    	if (! configuration.getKeepWorkspaces()) {
+    		exclusions.add(WORKSPACE_NAME);
+    	}
+    	if (! configuration.getKeepFingerprints()) {
+    		exclusions.add(FINGERPRINTS_NAME);
+    	}
+    	if (! configuration.getKeepBuilds()) {
+    		exclusions.add(BUILDS_NAME);
+    	}
+    	if (! configuration.getKeepArchives()) {
+    		exclusions.add(ARCHIVE_NAME);
+    	}
+        
+        FileFilter filter = createFileFilter(exclusions);
 
         try {
             BackupEngine backupEngine = new BackupEngine(logger,

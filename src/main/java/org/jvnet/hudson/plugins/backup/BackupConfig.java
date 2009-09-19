@@ -11,36 +11,35 @@ import org.jvnet.hudson.plugins.backup.utils.compress.CompressionMethodEnum;
  * User: vsellier Date: Apr 20, 2009 Time: 11:35:57 PM
  */
 public class BackupConfig {
+
 	private final static String DEFAULT_FILE_NAME_TEMPLATE = "backup_@date@.@extension@";
 	private final static CompressionMethodEnum DEFAULT_COMPRESSION_METHOD = CompressionMethodEnum.ZIP;
-	// TODO remove workspace from exclusions when configuration will be possible
-	private final static String[] DEFAULT_EXCLUSIONS = { "workspace",
-			"backup.log" };
 
 	private String targetDirectory;
 	private boolean verbose;
 	private String fileNameTemplate = DEFAULT_FILE_NAME_TEMPLATE;
 	private CompressionMethodEnum archiveType = CompressionMethodEnum.TARGZIP;
+	private boolean keepWorkspaces;
+	private boolean keepFingerprints;
+	private boolean keepBuilds;
+	private boolean keepArchives;
+	
 	/**
 	 * files or directory names not included into the backup
 	 */
-	private List<String> exclusions = new ArrayList<String>();
+	private List<String> customExclusions = new ArrayList<String>();
 
-	public List<String> getExclusions() {
-		return exclusions;
+	public List<String> getCustomExclusions() {
+		return customExclusions;
 	}
 
-	public void setExclusions(List<String> exclusions) {
-		List<String> defaultExclusions = Arrays.asList(DEFAULT_EXCLUSIONS);
-		defaultExclusions.removeAll(exclusions);
-		
-		this.exclusions.clear();
-		this.exclusions.addAll(exclusions);
-		this.exclusions.addAll(defaultExclusions);	
-    }
+	public void setCustomExclusions(List<String> exclusions) {
+		this.customExclusions.clear();
+		this.customExclusions.addAll(exclusions);
+	}
 
 	public void addExclusion(String exclusion) {
-		this.exclusions.add(exclusion);
+		this.customExclusions.add(exclusion);
 	}
 
 	public boolean isVerbose() {
@@ -83,4 +82,37 @@ public class BackupConfig {
 	public void setArchiveType(CompressionMethodEnum archiveType) {
 		this.archiveType = archiveType;
 	}
+	
+	public void setKeepWorkspaces(boolean keeping) {
+		this.keepWorkspaces = keeping;
+	}
+
+	public boolean getKeepWorkspaces() {
+		return keepWorkspaces;
+	}
+
+	public void setKeepFingerprints(boolean keepFingerprints) {
+		this.keepFingerprints = keepFingerprints;
+	}
+
+	public boolean getKeepFingerprints() {
+		return keepFingerprints;
+	}
+
+	public void setKeepBuilds(boolean keepBuilds) {
+		this.keepBuilds = keepBuilds;
+	}
+
+	public boolean getKeepBuilds() {
+		return keepBuilds;
+	}
+
+	public void setKeepArchives(boolean keepArchives) {
+		this.keepArchives = keepArchives;
+	}
+
+	public boolean getKeepArchives() {
+		return keepArchives;
+	}
+
 }

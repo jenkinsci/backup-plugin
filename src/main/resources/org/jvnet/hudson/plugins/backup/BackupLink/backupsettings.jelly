@@ -34,19 +34,18 @@
                 <f:section title="${%backup.content.title}">
                     <f:optionalBlock title="${%backup.content.workspace}"
                              help="${rootURL}/plugin/backup/help_backup_workspace.html"
-			                  checked="${it.configuration.keepWorkspaces}" name="verbose"/>
+			                  checked="${it.configuration.keepWorkspaces}" name="keepWorkspaces"/>
 
-				      <f:optionalBlock name="backup_buildHistory" title="${%backup.content.buildHistory}"
-				                       checked="${it.configuration.keepBuildHistory}" help="${rootURL}/plugin/backup/help_backup_build_history.html">
-				        <f:entry title="${%backup.content.archive}"
-				            help="${rootURL}/plugin/backup/help_backup_archive.html">
-			                        <f:checkbox checked="${it.configuration.keepArchive}" name="verbose"/>
-				                   
-				        </f:entry>
+				      <f:optionalBlock title="${%backup.content.buildHistory}"
+	                       checked="${it.configuration.keepBuildHistory}" help="${rootURL}/plugin/backup/help_backup_build_history.html" name="keepBuilds">
 				      </f:optionalBlock>
+ 			          <f:optionalBlock title="${%backup.content.archive}"
+				            help="${rootURL}/plugin/backup/help_backup_archive.html"
+							checked="${it.configuration.keepArchive}" name="keepArchives"/>
+				                   
                     <f:optionalBlock title="${%backup.content.fingerprints}"
                              help="${rootURL}/plugin/backup/help_backup_fingerprints.html"
-			                 checked="${it.configuration.keepFingerprints}" name="verbose"/>
+			                 checked="${it.configuration.keepFingerprints}" name="keepFingerprints"/>
 				</f:section>
                     <f:entry>
                         <f:submit value="${%backup.settings.save}"/>

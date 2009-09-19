@@ -146,8 +146,14 @@ public class BackupLink extends ManagementLink {
 
     public void doSaveSettings(StaplerRequest res, StaplerResponse rsp, @QueryParameter("backupDirectoryPath") String backupPath,
                                @QueryParameter("archive_format") String format, @QueryParameter("verbose") boolean verbose,
-                               @QueryParameter("fileNameTemplate") String fileNameTemplate) throws IOException {
-        Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
+                               @QueryParameter("fileNameTemplate") String fileNameTemplate,
+                               @QueryParameter("keepWorkspaces") boolean keepWorkspaces, 
+    						   @QueryParameter("keepFingerprints") boolean keepFingerprints, 
+    						   @QueryParameter("keepBuilds") boolean keepBuilds, 
+    						   @QueryParameter("keepArchives") boolean keepArchives) 
+    		throws IOException {
+    	LOGGER.info("BackupLink.doSaveSetting");
+    	Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
 
         BackupConfig configuration = new BackupConfig();
 
@@ -157,7 +163,11 @@ public class BackupLink extends ManagementLink {
 
         CompressionMethodEnum archiveType = CompressionMethodEnum.getFromCode(format);
         configuration.setArchiveType(archiveType);
-        configuration.setExclusions(new ArrayList<String>());
+        configuration.setCustomExclusions(new ArrayList<String>());
+        configuration.setKeepWorkspaces(keepWorkspaces);
+        configuration.setKeepFingerprints(keepFingerprints);
+        configuration.setKeepBuilds(keepBuilds);
+        configuration.setKeepArchives(keepArchives);
 
         BackupPluginImpl.getInstance().setConfiguration(configuration);
 
