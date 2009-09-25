@@ -27,8 +27,8 @@ import org.jvnet.hudson.plugins.backup.BackupException;
 public class BackupTask extends BackupPluginTask {
 	private final static String WORKSPACE_NAME = "workspace";
 	private final static String FINGERPRINTS_NAME = "fingerprints";
-	private final static String BUILDS_NAME = "**/builds";
-	private final static String ARCHIVE_NAME = "**/archive";	
+	private final static String BUILDS_NAME = "builds";
+	private final static String ARCHIVE_NAME = "archive";	
 	private final static String[] DEFAULT_EXCLUSIONS = { "backup.log" };
 
 	
@@ -79,7 +79,7 @@ public class BackupTask extends BackupPluginTask {
     		exclusions.add(ARCHIVE_NAME);
     	}
         
-        FileFilter filter = createFileFilter(exclusions);
+        IOFileFilter filter = createFileFilter(exclusions);
 
         try {
             BackupEngine backupEngine = new BackupEngine(logger,
@@ -105,7 +105,7 @@ public class BackupTask extends BackupPluginTask {
     }
 
 
-    private FileFilter createFileFilter(List<String> exclusions) {
+    public static IOFileFilter createFileFilter(List<String> exclusions) {
         // creating the filter
         IOFileFilter filter = new NameFileFilter(exclusions
                 .toArray(new String[]{}));

@@ -1,12 +1,12 @@
 package org.jvnet.hudson.plugins.backup.utils;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.io.DirectoryWalker;
+import org.apache.commons.io.filefilter.IOFileFilter;
 import org.jvnet.hudson.plugins.backup.BackupException;
 import org.jvnet.hudson.plugins.backup.utils.compress.Archiver;
 import org.jvnet.hudson.plugins.backup.utils.compress.ArchiverException;
@@ -25,8 +25,8 @@ public class BackupEngine extends DirectoryWalker {
 	private Archiver archiver;
 
 	public BackupEngine(BackupLogger logger, String sourceDirectory,
-			String targetName, Archiver archiver, FileFilter filter) throws BackupException {
-		super(filter, -1);
+			String targetName, Archiver archiver, IOFileFilter filter) throws BackupException {
+		super(filter, filter, -1);
 		this.logger = logger;
 		this.source = new File(sourceDirectory);
 		this.sourceLength = sourceDirectory.length();
