@@ -23,8 +23,6 @@ import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
 import org.kohsuke.stapler.framework.io.LargeText;
 
-import com.sun.org.apache.regexp.internal.RESyntaxException;
-
 public class BackupLink extends ManagementLink {
     private final static Logger LOGGER = Logger.getLogger(BackupLink.class
             .getName());
