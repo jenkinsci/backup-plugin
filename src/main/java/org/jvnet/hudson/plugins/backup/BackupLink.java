@@ -32,8 +32,8 @@ public class BackupLink extends ManagementLink {
     private static BackupLink instance;
 
     private BackupPluginTask task;
-    private boolean fileNameOk = false;
-
+    private Boolean backupRunning = Boolean.FALSE;
+    
     private BackupLink() {
     }
 
@@ -75,9 +75,17 @@ public class BackupLink extends ManagementLink {
         return extensions;
     }
 
-    public void doLaunchBackup(StaplerRequest res, StaplerResponse rsp) throws IOException {
+    public void doLaunchBackup(StaplerRequest req, StaplerResponse rsp) throws IOException {
         Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
 
+        if (task != null) {
+        	if (!task.isFinished()) {
+                // redirect to observation page
+                rsp.sendRedirect("backup");
+                return;
+        	}
+        }
+        
         BackupConfig configuration = getConfiguration();
 
         String fileNameTemplate = configuration.getTargetDirectory() + File.separator + configuration.getFileNameTemplate();
@@ -90,7 +98,7 @@ public class BackupLink extends ManagementLink {
         // Launching the task
         Thread thread = Executors.defaultThreadFactory().newThread(task);
         thread.start();
-
+        
         // redirect to observation page
         rsp.sendRedirect("backup");
     }
@@ -193,8 +201,14 @@ public class BackupLink extends ManagementLink {
 
     private void doProgressiveLog(StaplerRequest req, StaplerResponse rsp, File file)
             throws IOException {
-        new LargeText(file, task.isFinished()).doProgressText(
+        boolean backupFinished = task.isFinished();
+    	
+    	new LargeText(file, backupFinished).doProgressText(
                 req, rsp);
+        
+    	if (backupFinished) {
+    		task = null;
+    	}
     }
 
     public String getRootDirectory() {

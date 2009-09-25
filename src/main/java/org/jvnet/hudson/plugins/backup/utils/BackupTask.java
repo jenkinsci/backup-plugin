@@ -31,13 +31,11 @@ public class BackupTask extends BackupPluginTask {
 	private final static String ARCHIVE_NAME = "archive";	
 	private final static String[] DEFAULT_EXCLUSIONS = { "backup.log" };
 
-	
 	/**
      * delay between two verification of no running processes
      */
     private final static Integer DELAY = 5000;
-
-
+    
     public BackupTask(BackupConfig configuration, String hudsonWorkDir, String backupFileName, String logFilePath) {
         super(configuration, hudsonWorkDir, backupFileName, logFilePath);
     }
