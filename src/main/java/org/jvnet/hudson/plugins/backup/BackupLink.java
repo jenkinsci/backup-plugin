@@ -1,5 +1,6 @@
 package org.jvnet.hudson.plugins.backup;
 
+import hudson.Extension;
 import hudson.model.Hudson;
 import hudson.model.ManagementLink;
 
@@ -23,25 +24,14 @@ import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
 import org.kohsuke.stapler.framework.io.LargeText;
 
+@Extension
 public class BackupLink extends ManagementLink {
     private final static Logger LOGGER = Logger.getLogger(BackupLink.class
             .getName());
 
-    private static BackupLink instance;
-
     private BackupPluginTask task;
     private Boolean backupRunning = Boolean.FALSE;
     
-    private BackupLink() {
-    }
-
-    public static BackupLink getInstance() {
-        if (instance == null) {
-            instance = new BackupLink();
-        }
-        return instance;
-    }
-
     public BackupConfig getConfiguration() {
         return BackupPluginImpl.getInstance().getConfiguration();
     }

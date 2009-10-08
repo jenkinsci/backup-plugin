@@ -1,7 +1,6 @@
 package org.jvnet.hudson.plugins.backup;
 
 import hudson.Plugin;
-import hudson.model.ManagementLink;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -29,9 +28,8 @@ public class BackupPluginImpl extends Plugin {
         return instance;
     }
 
+    @Override
     public void start() {
-        ManagementLink.LIST.add(BackupLink.getInstance());
-
         try {
             configuration = loadConfiguration();
         } catch (IOException e) {
