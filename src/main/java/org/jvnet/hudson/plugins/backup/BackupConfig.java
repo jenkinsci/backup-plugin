@@ -1,7 +1,30 @@
+/*
+ * The MIT License
+ *
+ * Copyright (c) 2009-2010, Vincent Sellier, Manufacture Française des Pneumatiques Michelin, Romain Seguy
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 package org.jvnet.hudson.plugins.backup;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -23,6 +46,10 @@ public class BackupConfig {
 	private boolean keepFingerprints;
 	private boolean keepBuilds;
 	private boolean keepArchives;
+
+        private String jobIncludes;
+        private String jobExcludes;
+        private boolean caseSensitive;
 	
 	/**
 	 * files or directory names not included into the backup
@@ -114,5 +141,29 @@ public class BackupConfig {
 	public boolean getKeepArchives() {
 		return keepArchives;
 	}
+
+        public String getJobIncludes() {
+                return jobIncludes;
+        }
+
+        public void setJobIncludes(String jobIncludes) {
+                this.jobIncludes = jobIncludes;
+        }
+
+        public String getJobExcludes() {
+                return jobExcludes;
+        }
+
+        public void setJobExcludes(String jobExcludes) {
+                this.jobExcludes = jobExcludes;
+        }
+
+        public boolean getCaseSensitive() {
+                return caseSensitive;
+        }
+
+        public void setCaseSensitive(boolean caseSensitive) {
+                this.caseSensitive = caseSensitive;
+        }
 
 }

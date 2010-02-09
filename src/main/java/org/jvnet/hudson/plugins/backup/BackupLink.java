@@ -1,3 +1,27 @@
+/*
+ * The MIT License
+ *
+ * Copyright (c) 2009-2010, Vincent Sellier, Manufacture Française des Pneumatiques Michelin, Romain Seguy
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 package org.jvnet.hudson.plugins.backup;
 
 import hudson.Extension;
@@ -67,11 +91,11 @@ public class BackupLink extends ManagementLink {
         Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
 
         if (task != null) {
-        	if (!task.isFinished()) {
-                // redirect to observation page
-                rsp.sendRedirect("backup");
-                return;
-        	}
+                if (!task.isFinished()) {
+                        // redirect to observation page
+                        rsp.sendRedirect("backup");
+                        return;
+                }
         }
         
         BackupConfig configuration = getConfiguration();
@@ -140,13 +164,18 @@ public class BackupLink extends ManagementLink {
         return fileList;
     }
 
-    public void doSaveSettings(StaplerRequest res, StaplerResponse rsp, @QueryParameter("backupDirectoryPath") String backupPath,
-                               @QueryParameter("archive_format") String format, @QueryParameter("verbose") boolean verbose,
+    public void doSaveSettings(StaplerRequest res, StaplerResponse rsp,
+                               @QueryParameter("backupDirectoryPath") String backupPath,
+                               @QueryParameter("archive_format") String format,
+                               @QueryParameter("verbose") boolean verbose,
                                @QueryParameter("fileNameTemplate") String fileNameTemplate,
-                               @QueryParameter("keepWorkspaces") boolean keepWorkspaces, 
-    						   @QueryParameter("keepFingerprints") boolean keepFingerprints, 
-    						   @QueryParameter("keepBuilds") boolean keepBuilds, 
-    						   @QueryParameter("keepArchives") boolean keepArchives) 
+                               @QueryParameter("keepWorkspaces") boolean keepWorkspaces,
+                               @QueryParameter("keepFingerprints") boolean keepFingerprints,
+                               @QueryParameter("keepBuilds") boolean keepBuilds,
+                               @QueryParameter("keepArchives") boolean keepArchives,
+                               @QueryParameter("jobIncludes") String jobIncludes,
+                               @QueryParameter("jobExcludes") String jobExcludes,
+                               @QueryParameter("caseSensitive") boolean caseSensitive)
     		throws IOException {
     	LOGGER.info("BackupLink.doSaveSetting");
     	Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
@@ -164,6 +193,10 @@ public class BackupLink extends ManagementLink {
         configuration.setKeepFingerprints(keepFingerprints);
         configuration.setKeepBuilds(keepBuilds);
         configuration.setKeepArchives(keepArchives);
+
+        configuration.setJobIncludes(jobIncludes);
+        configuration.setJobExcludes(jobExcludes);
+        configuration.setCaseSensitive(caseSensitive);
 
         BackupPluginImpl.getInstance().setConfiguration(configuration);
 

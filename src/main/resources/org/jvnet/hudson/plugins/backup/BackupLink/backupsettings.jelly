@@ -1,3 +1,27 @@
+<!--
+  - The MIT License
+  -
+  - Copyright (c) 2009-2010, Vincent Sellier, Manufacture Française des Pneumatiques Michelin, Romain Seguy
+  -
+  - Permission is hereby granted, free of charge, to any person obtaining a copy
+  - of this software and associated documentation files (the "Software"), to deal
+  - in the Software without restriction, including without limitation the rights
+  - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  - copies of the Software, and to permit persons to whom the Software is
+  - furnished to do so, subject to the following conditions:
+  -
+  - The above copyright notice and this permission notice shall be included in
+  - all copies or substantial portions of the Software.
+  -
+  - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  - THE SOFTWARE.
+  -->
+
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
          xmlns:t="/lib/hudson" xmlns:f="/lib/form">
     <l:layout permission="${app.ADMINISTER}" norefresh="true">
@@ -9,12 +33,13 @@
             </h1>
 
             <f:form method="post" action="saveSettings">
+                <!-- Backup configuration -->
                 <f:section title="${%backup.settings.title}">
                     <f:entry title="${%backup.root.directory.title}">
                         ${it.rootDirectory}
                     </f:entry>
                     <f:entry title="${%backup.directory.title}"
-                             help="${rootURL}/plugin/backup/help_backup_directory.html">
+                             field="targetDirectory">
                         <f:textbox value="${it.configuration.targetDirectory}" name="backupDirectoryPath"/>
                     </f:entry>
                     <f:entry title="${%backup.archivetype.title}">
@@ -25,31 +50,52 @@
                         </select>
                     </f:entry>
                     <f:entry title="${%backup.fileNameTemplate.title}"
-                             help="${rootURL}/plugin/backup/help_backup_filenametemplate.html">
+                             field="fileNameTemplate">
                         <f:textbox value="${it.configuration.fileNameTemplate}" name="fileNameTemplate"/>
                     </f:entry>
-                    <f:optionalBlock title="${%backup.verbose.title}" help="${rootURL}/plugin/backup/help_verbose.html"
-                         checked="${it.configuration.verbose}" name="verbose"/>
+                    <f:optionalBlock title="${%backup.verbose.title}"
+                        checked="${it.configuration.verbose}" name="verbose"
+                        field="verbose"/>
                 </f:section>
-                <f:section title="${%backup.content.title}">
-                    <f:optionalBlock title="${%backup.content.workspace}"
-                             help="${rootURL}/plugin/backup/help_backup_workspace.html"
-			                  checked="${it.configuration.keepWorkspaces}" name="keepWorkspaces"/>
 
-				      <f:optionalBlock title="${%backup.content.buildHistory}"
-	                       checked="${it.configuration.keepBuildHistory}" help="${rootURL}/plugin/backup/help_backup_build_history.html" name="keepBuilds">
-				      </f:optionalBlock>
- 			          <f:optionalBlock title="${%backup.content.archive}"
-				            help="${rootURL}/plugin/backup/help_backup_archive.html"
-							checked="${it.configuration.keepArchive}" name="keepArchives"/>
-				                   
+                <!-- Backup content -->
+                <f:section title="${%backup.content.title}">
+                    <!-- Backup job workspace -->
+                    <f:optionalBlock title="${%backup.content.workspace}"
+                        name="keepWorkspaces"
+                        checked="${it.configuration.keepWorkspaces}"
+                        field="keepWorkspaces">
+                        <f:entry title="${%backup.content.workspace.includes}" field="jobIncludes">
+                            <f:textbox name="jobIncludes" value="${it.configuration.jobIncludes}"/>
+                        </f:entry>
+                        <f:entry title="${%backup.content.workspace.excludes}" field="jobExcludes">
+                            <f:textbox name="jobExcludes" value="${it.configuration.jobExcludes}"/>
+                        </f:entry>
+                        <f:entry title="${%backup.content.workspace.caseSensitive}" field="caseSensitive">
+                            <f:checkbox name="caseSensitive" checked="${it.configuration.caseSensitive}"/>
+                        </f:entry>
+                    </f:optionalBlock>
+                    <!-- Backup builds history -->
+                    <f:optionalBlock title="${%backup.content.buildHistory}"
+                        name="keepBuilds"
+                        checked="${it.configuration.keepBuildHistory}"
+                        field="keepBuilds"/>
+                    <!-- Backup maven artifacts archives -->
+                    <f:optionalBlock title="${%backup.content.archive}"
+                        name="keepArchives"
+                        checked="${it.configuration.keepArchive}"
+                        field="keepArchives"/>
+                    <!-- Backup fingerprints -->
                     <f:optionalBlock title="${%backup.content.fingerprints}"
-                             help="${rootURL}/plugin/backup/help_backup_fingerprints.html"
-			                 checked="${it.configuration.keepFingerprints}" name="keepFingerprints"/>
-				</f:section>
-                    <f:entry>
-                        <f:submit value="${%backup.settings.save}"/>
-                    </f:entry>
+                        name="keepFingerprints"
+                        checked="${it.configuration.keepFingerprints}"
+                        field="keepFingerprints"/>
+                </f:section>
+
+                <!-- Save! -->
+                <f:entry>
+                    <f:submit value="${%backup.settings.save}"/>
+                </f:entry>
             </f:form>
         </l:main-panel>
     </l:layout>
