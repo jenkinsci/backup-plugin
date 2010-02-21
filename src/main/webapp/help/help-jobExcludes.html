@@ -1,7 +1,7 @@
 <!--
   - The MIT License
   -
-  - Copyright (c) 2009-2010, Vincent Sellier
+  - Copyright (c) 2010, Manufacture Française des Pneumatiques Michelin, Romain Seguy
   -
   - Permission is hereby granted, free of charge, to any person obtaining a copy
   - of this software and associated documentation files (the "Software"), to deal
@@ -22,13 +22,13 @@
   - THE SOFTWARE.
   -->
 
-Define the archive's final name. Keywords permits to generate dynamics names.
-<br/>
-Supported keywords are:
-<UL>
-    <LI><B>date</B>: replaced by the date and time using YYYYDDMM_hhmm format</LI>
-    <LI><B>extension</B>: replaced by the chosen format</LI>
-</UL>
-Keyword must be enclosed by @ to be interpreted.
-<br/>
-Default value : bakup_@date@.@extension@
+<div>
+    Optionally specify the <a href='http://ant.apache.org/manual/CoreTypes/fileset.html'>
+    'excludes' pattern</a> to restrict what has been specified in the Includes
+    field. That is, a file that matches both this mask and the Includes one will
+    not be saved. The base directory is the workspace of each job.<br/>
+    For example, setting this field to <code>src/repository/*</code> and the
+    Includes field to <code>src/**</code> will allow saving, for each job, the
+    whole content of the <code>src</code> directory, excluding the <code>
+    src/repository</code> one.
+</div>

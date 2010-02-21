@@ -1,7 +1,7 @@
 <!--
   - The MIT License
   -
-  - Copyright (c) 2010, Manufacture Française des Pneumatiques Michelin, Romain Seguy
+  - Copyright (c) 2009-2010, Vincent Sellier
   -
   - Permission is hereby granted, free of charge, to any person obtaining a copy
   - of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,12 @@
   -->
 
 <div>
-    Comma- or space-separated list of patterns of files/directories to be copied
-    from the slave node back to the master one. See the
-    <a href='http://ant.apache.org/manual/CoreTypes/fileset.html'>@includes of
-    Ant fileset</a> for the exact format. The base directory is the
-    <a href='ws/'>workspace</a>.
-    <br/>
-    E.g.: *.xml,**/*.properties
+    Define the archive's final name. Keywords allow to generate dynamics names.<br/>
+    Supported keywords are:
+    <UL>
+        <LI><B>date</B>: replaced by the date and time using YYYYDDMM_hhmm format</LI>
+        <LI><B>extension</B>: replaced by the chosen format</LI>
+    </UL>
+    Keyword must be enclosed by <code>@</code> to be interpreted.<br/>
+    Default value: <code>bakup_@date@.@extension@</code>
 </div>

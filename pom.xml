@@ -8,34 +8,23 @@
     </parent>
     <artifactId>backup</artifactId>
     <packaging>hpi</packaging>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.4.1-SNAPSHOT</version>
     <name>Hudson Backup plugin</name>
     <url>http://wiki.hudson-ci.org/display/HUDSON/Backup+Plugin</url>
-    <description>Backup and restore Hudson configuration files</description>
+    <description>Backup and restore Hudson files</description>
 
-    <!-- repository is declared here for standelone builds -->
-    <repositories>
-        <repository>
-            <id>m.g.o-public</id>
-            <url>http://maven.glassfish.org/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>backup-local</id>
-            <url>file://${basedir}/src/repository</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+    <developers>
+        <developer>
+            <id>vsellier</id>
+            <name>Vincent Sellier</name>
+            <timezone>+1</timezone>
+        </developer>
+        <developer>
+            <id>rseguy</id>
+            <name>Romain Seguy</name>
+            <timezone>+1</timezone>
+        </developer>
+    </developers>
 
     <dependencies>
         <dependency>

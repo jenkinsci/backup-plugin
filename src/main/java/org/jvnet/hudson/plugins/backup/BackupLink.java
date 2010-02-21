@@ -244,4 +244,5 @@ public class BackupLink extends ManagementLink {
     private File getRestoreLogFile() {
         return new File(System.getProperty("java.io.tmpdir"), "/hudson_restore.log");
     }
+
 }

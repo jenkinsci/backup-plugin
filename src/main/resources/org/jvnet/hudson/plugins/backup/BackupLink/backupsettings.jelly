@@ -39,7 +39,7 @@
                         ${it.rootDirectory}
                     </f:entry>
                     <f:entry title="${%backup.directory.title}"
-                             field="targetDirectory">
+                             help="/plugin/backup/help/help-targetDirectory.html">
                         <f:textbox value="${it.configuration.targetDirectory}" name="backupDirectoryPath"/>
                     </f:entry>
                     <f:entry title="${%backup.archivetype.title}">
@@ -50,12 +50,13 @@
                         </select>
                     </f:entry>
                     <f:entry title="${%backup.fileNameTemplate.title}"
-                             field="fileNameTemplate">
+                             help="/plugin/backup/help/help-fileNameTemplate.html">
                         <f:textbox value="${it.configuration.fileNameTemplate}" name="fileNameTemplate"/>
                     </f:entry>
                     <f:optionalBlock title="${%backup.verbose.title}"
-                        checked="${it.configuration.verbose}" name="verbose"
-                        field="verbose"/>
+                        checked="${it.configuration.verbose}"
+                        name="verbose"
+                        help="/plugin/backup/help/help-verbose.html"/>
                 </f:section>
 
                 <!-- Backup content -->
@@ -63,33 +64,29 @@
                     <!-- Backup job workspace -->
                     <f:optionalBlock title="${%backup.content.workspace}"
                         name="keepWorkspaces"
-                        checked="${it.configuration.keepWorkspaces}"
-                        field="keepWorkspaces">
-                        <f:entry title="${%backup.content.workspace.includes}" field="jobIncludes">
+                        checked="${it.configuration.keepWorkspaces}">
+                        <f:entry title="${%backup.content.workspace.includes}" help="/plugin/backup/help/help-jobIncludes.html">
                             <f:textbox name="jobIncludes" value="${it.configuration.jobIncludes}"/>
                         </f:entry>
-                        <f:entry title="${%backup.content.workspace.excludes}" field="jobExcludes">
+                        <f:entry title="${%backup.content.workspace.excludes}" help="/plugin/backup/help/help-jobExcludes.html">
                             <f:textbox name="jobExcludes" value="${it.configuration.jobExcludes}"/>
                         </f:entry>
-                        <f:entry title="${%backup.content.workspace.caseSensitive}" field="caseSensitive">
+                        <f:entry title="${%backup.content.workspace.caseSensitive}">
                             <f:checkbox name="caseSensitive" checked="${it.configuration.caseSensitive}"/>
                         </f:entry>
                     </f:optionalBlock>
                     <!-- Backup builds history -->
                     <f:optionalBlock title="${%backup.content.buildHistory}"
                         name="keepBuilds"
-                        checked="${it.configuration.keepBuildHistory}"
-                        field="keepBuilds"/>
+                        checked="${it.configuration.keepBuildHistory}"/>
                     <!-- Backup maven artifacts archives -->
                     <f:optionalBlock title="${%backup.content.archive}"
                         name="keepArchives"
-                        checked="${it.configuration.keepArchive}"
-                        field="keepArchives"/>
+                        checked="${it.configuration.keepArchive}"/>
                     <!-- Backup fingerprints -->
                     <f:optionalBlock title="${%backup.content.fingerprints}"
                         name="keepFingerprints"
-                        checked="${it.configuration.keepFingerprints}"
-                        field="keepFingerprints"/>
+                        checked="${it.configuration.keepFingerprints}"/>
                 </f:section>
 
                 <!-- Save! -->

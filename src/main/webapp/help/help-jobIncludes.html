@@ -1,7 +1,7 @@
 <!--
   - The MIT License
   -
-  - Copyright (c) 2009-2010, Vincent Sellier
+  - Copyright (c) 2010, Manufacture Française des Pneumatiques Michelin, Romain Seguy
   -
   - Permission is hereby granted, free of charge, to any person obtaining a copy
   - of this software and associated documentation files (the "Software"), to deal
@@ -23,5 +23,13 @@
   -->
 
 <div>
-    This is the absolute path of the backup directory on the hudson server. For exemple: /data/backup/hudson
+    Comma- or space-separated list of patterns of files/directories to be saved.
+    See the <a href='http://ant.apache.org/manual/CoreTypes/fileset.html'>
+    @includes of Ant fileset</a> for the exact format. The base directory is the
+    workspace of each job.<br/>
+    For example, setting this field to <code>src/**</code> will allow saving, for
+    each job, the whole content of its <code>src</code> directory, excluding any
+    other files/directories in the workspace.<br/>
+    If no value is specified, the whole content of the workspaces will be taken
+    into account.
 </div>
