@@ -26,6 +26,19 @@
         </developer>
     </developers>
 
+    <repositories>
+        <repository>
+            <id>backup-local</id>
+            <url>file://${basedir}/src/repository</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>commons-io</groupId>
