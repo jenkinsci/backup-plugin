@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2010, Vincent Sellier
+ * Copyright (c) 2009-2010, Vincent Sellier, Manufacture Française des Pneumatiques Michelin, Romain Seguy
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,22 +24,29 @@
 
 package org.jvnet.hudson.plugins.backup.utils.compress;
 
+import hudson.model.Hudson;
+
 /**
  * List the different compression methods supported by backup plugin
  */
 public enum CompressionMethodEnum {
-    ZIP("zip", ZipArchiver.class, ZipUnArchiver.class),
-    TARGZIP("tar.gz", TarGzipArchiver.class, TarGzipUnArchiver.class),
-    TARBZ2("tar.bz2", TarBz2Archiver.class, TarBz2UnArchiver.class);
+    ZIP("zip", ZipArchiver.class, ZipUnArchiver.class, true, true),
+    TARGZIP("tar.gz", TarGzipArchiver.class, TarGzipUnArchiver.class, false, true),
+    TARBZ2("tar.bz2", TarBz2Archiver.class, TarBz2UnArchiver.class, false, true);
 
     private final String code;
     private final Class<? extends Archiver> archiverClass;
     private final Class<? extends UnArchiver> unArchiverClass;
+    // HUDSON-5305
+    private final boolean supportedByWindows;
+    private final boolean supportedByUnix;
 
-    private CompressionMethodEnum(String code, Class<? extends Archiver> archiverClass, Class<? extends UnArchiver> unArchiverClass) {
+    private CompressionMethodEnum(String code, Class<? extends Archiver> archiverClass, Class<? extends UnArchiver> unArchiverClass, boolean supportedByWindows, boolean supportedByUnix) {
         this.code = code;
         this.archiverClass = archiverClass;
         this.unArchiverClass = unArchiverClass;
+        this.supportedByWindows = supportedByWindows;
+        this.supportedByUnix = supportedByUnix;
     }
 
     public String getCode() {
@@ -53,6 +60,21 @@ public enum CompressionMethodEnum {
             throw new RuntimeException("Unable to instanciate compression engine for " + getCode() + " method.", e);
         } catch (IllegalAccessException e) {
             throw new RuntimeException("Unable to instanciate compression engine for " + getCode() + " method.", e);
+        }
+    }
+
+    /**
+     * Returns {@code true} is the compression method is supported by the platform
+     * currently running Hudson (that is, Windows or Unix).
+     *
+     * <p>Fixes HUDSON-5305.</p>
+     */
+    public boolean isSupportedByPlatform() {
+        if(Hudson.isWindows()) {
+            return supportedByWindows;
+        }
+        else {
+            return supportedByUnix;
         }
     }
     
@@ -82,5 +104,5 @@ public enum CompressionMethodEnum {
         }
         throw new IllegalArgumentException("Unknown code " + code);
     }
-    
+
 }

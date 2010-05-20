@@ -82,7 +82,9 @@ public class BackupLink extends ManagementLink {
     public List<String> getExtensions() {
         List<String> extensions = new ArrayList();
         for (CompressionMethodEnum method : CompressionMethodEnum.values()) {
-            extensions.add(method.getCode());
+            if(method.isSupportedByPlatform()) { // HUDSON-5305
+                extensions.add(method.getCode());
+            }
         }
         return extensions;
     }
