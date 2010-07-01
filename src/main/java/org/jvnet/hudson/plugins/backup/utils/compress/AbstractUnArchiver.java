@@ -66,7 +66,6 @@ public abstract class AbstractUnArchiver implements UnArchiver {
 			LOGGER.log(Level.SEVERE, message, e);
 			throw new ArchiverException(message, e);
 		} catch (Exception e) {
-			e.printStackTrace();
 			LOGGER.severe(e.getMessage());
 		}
 	}

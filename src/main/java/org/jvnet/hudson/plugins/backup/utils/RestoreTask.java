@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletContext;
@@ -71,8 +72,7 @@ public class RestoreTask extends BackupPluginTask {
         try {
             logger = new BackupLogger(logFilePath, configuration.isVerbose());
         } catch (IOException e) {
-            LOGGER.severe("Unable to open log file for writing : "
-                    + logFilePath);
+            LOGGER.log(Level.SEVERE, "Unable to open log file for writing : {0}", logFilePath);
             return;
         }
 

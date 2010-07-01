@@ -35,6 +35,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.jvnet.hudson.plugins.backup.utils.BackupPluginTask;
@@ -127,7 +128,7 @@ public class BackupLink extends ManagementLink {
         String path = configuration.getTargetDirectory();
         String filePath = path + File.separator + backupFile;
 
-        LOGGER.info("Selected file : " + backupFile);
+        LOGGER.log(Level.INFO, "Selected file : {0}", backupFile);
 
         task = new RestoreTask(configuration, Hudson.getInstance().getRootDir().getAbsolutePath(),
                 filePath, getRestoreLogFile().getAbsolutePath(), res.getServletContext());
@@ -145,7 +146,7 @@ public class BackupLink extends ManagementLink {
      * search into the declared backup directory for backup archives
      */
     public List<File> getFileList() throws IOException {
-        LOGGER.info("Listing files of " + getConfiguration().getTargetDirectory());
+        LOGGER.log(Level.INFO, "Listing files of {0}", getConfiguration().getTargetDirectory());
         Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
 
         BackupConfig configuration = getConfiguration();
@@ -169,6 +170,7 @@ public class BackupLink extends ManagementLink {
     public void doSaveSettings(StaplerRequest res, StaplerResponse rsp,
                                @QueryParameter("backupDirectoryPath") String backupPath,
                                @QueryParameter("archive_format") String format,
+                               @QueryParameter("customExclusionsString") String customExclusionsString,
                                @QueryParameter("verbose") boolean verbose,
                                @QueryParameter("fileNameTemplate") String fileNameTemplate,
                                @QueryParameter("keepWorkspaces") boolean keepWorkspaces,
@@ -190,7 +192,7 @@ public class BackupLink extends ManagementLink {
 
         CompressionMethodEnum archiveType = CompressionMethodEnum.getFromCode(format);
         configuration.setArchiveType(archiveType);
-        configuration.setCustomExclusions(new ArrayList<String>());
+        configuration.setCustomExclusionsString(customExclusionsString);
         configuration.setKeepWorkspaces(keepWorkspaces);
         configuration.setKeepFingerprints(keepFingerprints);
         configuration.setKeepBuilds(keepBuilds);

@@ -53,6 +53,10 @@
                              help="/plugin/backup/help/help-fileNameTemplate.html">
                         <f:textbox value="${it.configuration.fileNameTemplate}" name="fileNameTemplate"/>
                     </f:entry>
+                    <f:entry title="${%backup.customExclusions.title}"
+                             help="/plugin/backup/help/help-customExcludes.html">
+                        <f:textbox value="${it.configuration.customExclusionsString}" name="customExclusionsString"/>
+                    </f:entry>
                     <f:optionalBlock title="${%backup.verbose.title}"
                         checked="${it.configuration.verbose}"
                         name="verbose"

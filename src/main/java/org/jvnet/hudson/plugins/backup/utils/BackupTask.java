@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 
 import org.acegisecurity.context.SecurityContextHolder;
@@ -80,8 +81,7 @@ public class BackupTask extends BackupPluginTask {
         try {
             logger = new BackupLogger(logFilePath, configuration.isVerbose());
         } catch (IOException e) {
-            LOGGER.severe("Unable to open log file for writing : "
-                    + logFilePath);
+            LOGGER.log(Level.SEVERE, "Unable to open log file for writing: {0}", logFilePath);
             return;
         }
 

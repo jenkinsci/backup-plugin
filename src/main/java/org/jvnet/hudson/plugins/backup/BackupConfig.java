@@ -25,6 +25,7 @@
 package org.jvnet.hudson.plugins.backup;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -67,6 +68,16 @@ public class BackupConfig {
 
 	public void addExclusion(String exclusion) {
 		this.customExclusions.add(exclusion);
+	}
+	
+	public String getCustomExclusionsString() {
+		return StringUtils.join(customExclusions, ',');
+	}
+	
+	public void setCustomExclusionsString(String customExclusionsString) {
+		String[] exclusionsArray = StringUtils.split(customExclusionsString, ", ");
+		List<String> exclusionsList = Arrays.asList(exclusionsArray);
+		setCustomExclusions(exclusionsList);
 	}
 
 	public boolean isVerbose() {
