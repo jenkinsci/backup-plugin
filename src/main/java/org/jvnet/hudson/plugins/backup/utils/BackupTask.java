@@ -27,18 +27,6 @@ package org.jvnet.hudson.plugins.backup.utils;
 import hudson.model.Computer;
 import hudson.model.Hudson;
 import hudson.security.ACL;
-import java.io.File;
-import java.io.FileFilter;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.regex.Matcher;
-
 import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.io.filefilter.DelegateFileFilter;
 import org.apache.commons.io.filefilter.FileFilterUtils;
@@ -48,6 +36,17 @@ import org.codehaus.plexus.util.DirectoryScanner;
 import org.jvnet.hudson.plugins.backup.BackupConfig;
 import org.jvnet.hudson.plugins.backup.BackupException;
 import org.jvnet.hudson.plugins.backup.utils.filename.SimpleFileFilter;
+
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.regex.Matcher;
 
 /**
  * This is the backup task, run in background and log to a file
@@ -88,7 +87,8 @@ public class BackupTask extends BackupPluginTask {
         logger.info("Backup started at " + getTimestamp(startDate));
 
         // Have to include shutdown time in backup time ?
-        waitNoJobsInQueue();
+        if(!configuration.isNoShutdown())
+            waitNoJobsInQueue();
 
         // file filter specific to what's inside jobs' worskpace
         IOFileFilter jobsExclusionFileFilter = null;
@@ -118,6 +118,8 @@ public class BackupTask extends BackupPluginTask {
     	}
         
         IOFileFilter filter = createFileFilter(exclusions, jobsExclusionFileFilter);
+        if(configuration.isXmlOnly())
+            filter = FileFilterUtils.andFileFilter(filter, FileFilterUtils.orFileFilter(FileFilterUtils.suffixFileFilter(".xml"), FileFilterUtils.directoryFileFilter() ));
 
         try {
             BackupEngine backupEngine = new BackupEngine(logger,

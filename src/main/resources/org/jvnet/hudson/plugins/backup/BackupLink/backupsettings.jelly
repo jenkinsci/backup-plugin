@@ -61,6 +61,14 @@
                         checked="${it.configuration.verbose}"
                         name="verbose"
                         help="/plugin/backup/help/help-verbose.html"/>
+                    <f:optionalBlock title="${%backup.xmlOnly.title}"
+                        checked="${it.configuration.xmlOnly}"
+                        name="xmlOnly"
+                        help="/plugin/backup/help/help-xmlonly.html"/>
+                    <f:optionalBlock title="${%backup.noShutdown.title}"
+                        checked="${it.configuration.noShutdown}"
+                        name="noShutdown"
+                        help="/plugin/backup/help/help-noshutdown.html"/>
                 </f:section>
 
                 <!-- Backup content -->

@@ -172,6 +172,8 @@ public class BackupLink extends ManagementLink {
                                @QueryParameter("archive_format") String format,
                                @QueryParameter("customExclusionsString") String customExclusionsString,
                                @QueryParameter("verbose") boolean verbose,
+                               @QueryParameter("xmlOnly") boolean xmlOnly,
+                               @QueryParameter("noShutdown") boolean noShutdown,
                                @QueryParameter("fileNameTemplate") String fileNameTemplate,
                                @QueryParameter("keepWorkspaces") boolean keepWorkspaces,
                                @QueryParameter("keepFingerprints") boolean keepFingerprints,
@@ -188,6 +190,8 @@ public class BackupLink extends ManagementLink {
 
         configuration.setTargetDirectory(backupPath);
         configuration.setVerbose(verbose);
+        configuration.setXmlOnly(xmlOnly);
+        configuration.setNoShutdown(noShutdown);
         configuration.setFileNameTemplate(fileNameTemplate);
 
         CompressionMethodEnum archiveType = CompressionMethodEnum.getFromCode(format);

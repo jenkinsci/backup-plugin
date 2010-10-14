@@ -24,12 +24,12 @@
 
 package org.jvnet.hudson.plugins.backup;
 
+import org.apache.commons.lang.StringUtils;
+import org.jvnet.hudson.plugins.backup.utils.compress.CompressionMethodEnum;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.jvnet.hudson.plugins.backup.utils.compress.CompressionMethodEnum;
 
 /**
  * User: vsellier Date: Apr 20, 2009 Time: 11:35:57 PM
@@ -41,6 +41,8 @@ public class BackupConfig {
 
 	private String targetDirectory;
 	private boolean verbose;
+    private boolean xmlOnly;
+    private boolean noShutdown;
 	private String fileNameTemplate = DEFAULT_FILE_NAME_TEMPLATE;
 	private CompressionMethodEnum archiveType = CompressionMethodEnum.TARGZIP;
 	private boolean keepWorkspaces;
@@ -84,9 +86,25 @@ public class BackupConfig {
 		return verbose;
 	}
 
+    public boolean isXmlOnly() {
+		return xmlOnly;
+	}
+
+    public boolean isNoShutdown() {
+        return noShutdown;
+    }
+
 	public void setVerbose(boolean verbose) {
 		this.verbose = verbose;
 	}
+
+    public void setXmlOnly(boolean xmlOnly) {
+		this.xmlOnly = xmlOnly;
+	}
+
+    public void setNoShutdown(boolean noShutdown) {
+        this.noShutdown = noShutdown;
+    }
 
 	public String getTargetDirectory() {
 
