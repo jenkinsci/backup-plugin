@@ -87,8 +87,9 @@ public class BackupTask extends BackupPluginTask {
         logger.info("Backup started at " + getTimestamp(startDate));
 
         // Have to include shutdown time in backup time ?
-        if(!configuration.isNoShutdown())
+        if(!configuration.isNoShutdown()) {
             waitNoJobsInQueue();
+        }
 
         // file filter specific to what's inside jobs' worskpace
         IOFileFilter jobsExclusionFileFilter = null;
@@ -98,7 +99,7 @@ public class BackupTask extends BackupPluginTask {
     	exclusions.addAll(Arrays.asList(DEFAULT_EXCLUSIONS));
     	exclusions.addAll(configuration.getCustomExclusions());
     	if (! configuration.getKeepWorkspaces()) {
-    		exclusions.add(WORKSPACE_NAME);
+            exclusions.add(WORKSPACE_NAME);
     	}
         else {
             jobsExclusionFileFilter = createJobsExclusionFileFilter(
@@ -118,8 +119,10 @@ public class BackupTask extends BackupPluginTask {
     	}
         
         IOFileFilter filter = createFileFilter(exclusions, jobsExclusionFileFilter);
-        if(configuration.isXmlOnly())
-            filter = FileFilterUtils.andFileFilter(filter, FileFilterUtils.orFileFilter(FileFilterUtils.suffixFileFilter(".xml"), FileFilterUtils.directoryFileFilter() ));
+        if(configuration.isXmlOnly()) {
+            filter = FileFilterUtils.andFileFilter(filter, FileFilterUtils.orFileFilter(FileFilterUtils.suffixFileFilter(".xml"),
+                    FileFilterUtils.directoryFileFilter()));
+        }
 
         try {
             BackupEngine backupEngine = new BackupEngine(logger,

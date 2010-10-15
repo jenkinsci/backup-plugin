@@ -24,7 +24,7 @@
 
 package org.jvnet.hudson.plugins.backup.utils.compress;
 
-import hudson.model.Hudson;
+import hudson.Functions;
 
 /**
  * List the different compression methods supported by backup plugin
@@ -70,7 +70,7 @@ public enum CompressionMethodEnum {
      * <p>Fixes HUDSON-5305.</p>
      */
     public boolean isSupportedByPlatform() {
-        if(Hudson.isWindows()) {
+        if(Functions.isWindows()) {
             return supportedByWindows;
         }
         else {

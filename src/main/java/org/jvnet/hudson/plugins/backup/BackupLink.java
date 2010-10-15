@@ -106,7 +106,8 @@ public class BackupLink extends ManagementLink {
         String fileNameTemplate = configuration.getTargetDirectory() + File.separator + configuration.getFileNameTemplate();
 
         String fileName = new FileNameManager().getFileName(fileNameTemplate, configuration);
-        LOGGER.info("backup file name = " + fileName + " (generated from template :" + fileNameTemplate + ")");
+        LOGGER.log(Level.INFO,
+                "backup file name = {0} (generated from template :{1})", new Object[] { fileName, fileNameTemplate });
         // configuring backup
         task = new BackupTask(configuration, getRootDirectory(), fileName, getBackupLogFile().getAbsolutePath());
 
