@@ -32,11 +32,24 @@
                 ${it.displayName}
             </h1>
 
-            <h2><A href="backupsettings">${%configuration.title}</A></h2>
+            <table border="0">
+                <tr>
+                    <td>
+                        <a href="backupsettings"><img src="${rootURL}/plugin/backup/images/setup-48x48.png" alt="" /></a> <a href="backupsettings" alt="" > ${%configuration.title} </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="launchBackup"><img src="${rootURL}/plugin/backup/images/save-48x48.png" alt="" /></a> <a href="launchBackup" alt="" > ${%backup.title} </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="launchrestore"><img src="${rootURL}/plugin/backup/images/restore-48x48.png" alt="" /></a> <a href="launchrestore" alt="" > ${%restore.title} </a>
+                    </td>
+                </tr>
+            </table>
 
-            <h2><A href="launchBackup">${%backup.title}</A></h2>
-
-            <h2><A href="launchrestore">${%restore.title}</A></h2>
 
         </l:main-panel>
     </l:layout>
