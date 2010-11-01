@@ -90,11 +90,11 @@
                     <!-- Backup builds history -->
                     <f:optionalBlock title="${%backup.content.buildHistory}"
                         name="keepBuilds"
-                        checked="${it.configuration.keepBuildHistory}"/>
+                        checked="${it.configuration.keepBuilds}"/>
                     <!-- Backup maven artifacts archives -->
                     <f:optionalBlock title="${%backup.content.archive}"
                         name="keepArchives"
-                        checked="${it.configuration.keepArchive}"/>
+                        checked="${it.configuration.keepArchives}"/>
                     <!-- Backup fingerprints -->
                     <f:optionalBlock title="${%backup.content.fingerprints}"
                         name="keepFingerprints"
