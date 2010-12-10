@@ -13,7 +13,7 @@
     <name>Hudson Backup plugin</name>
     <url>http://wiki.hudson-ci.org/display/HUDSON/Backup+Plugin</url>
     <description>Backups and restores Hudson files</description>
-    <version>1.6-SNAPSHOT</version>
+    <version>1.6</version>
 
     <developers>
         <developer>
@@ -71,7 +71,8 @@
 
     <!-- see http://groups.google.com/group/hudson-dev/browse_thread/thread/83e34c639eec470a for the rationale behind this -->
     <scm>
-        <connection>scm:svn:https://guest@svn.java.net/svn/hudson~svn/trunk/hudson/plugins/backup</connection>
-        <developerConnection>scm:svn:https://svn.java.net/svn/hudson~svn/trunk/hudson/plugins/backup</developerConnection>
-    </scm>
+        <connection>scm:svn:https://guest@svn.java.net/svn/hudson~svn/tags/backup-1.6</connection>
+        <developerConnection>scm:svn:https://svn.java.net/svn/hudson~svn/tags/backup-1.6</developerConnection>
+      <url>https://hudson.dev.java.net/source/browse/hudson/tags/backup-1.6</url>
+  </scm>
 </project>
