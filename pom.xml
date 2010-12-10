@@ -3,15 +3,17 @@
     <parent>
         <groupId>org.jvnet.hudson.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>1.358</version>
+        <version>1.375</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+
+    <groupId>org.jvnet.hudson.plugins</groupId>
     <artifactId>backup</artifactId>
     <packaging>hpi</packaging>
-    <version>1.5.1-SNAPSHOT</version>
     <name>Hudson Backup plugin</name>
     <url>http://wiki.hudson-ci.org/display/HUDSON/Backup+Plugin</url>
-    <description>Backup and restore Hudson files</description>
+    <description>Backups and restores Hudson files</description>
+    <version>1.6-SNAPSHOT</version>
 
     <developers>
         <developer>
@@ -25,19 +27,6 @@
             <timezone>+1</timezone>
         </developer>
     </developers>
-
-    <repositories>
-        <repository>
-            <id>backup-local</id>
-            <url>file://${basedir}/src/repository</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <dependencies>
         <dependency>
@@ -67,4 +56,22 @@
             <version>1.5.5_hudson</version>
         </dependency>
     </dependencies>
+
+    <!-- see http://groups.google.com/group/hudson-dev/browse_thread/thread/83e34c639eec470a for the rationale behind this -->
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <goals>deploy</goals>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- see http://groups.google.com/group/hudson-dev/browse_thread/thread/83e34c639eec470a for the rationale behind this -->
+    <scm>
+        <connection>scm:svn:https://guest@svn.java.net/svn/hudson~svn/trunk/hudson/plugins/copy-to-slave</connection>
+        <developerConnection>scm:svn:https://svn.java.net/svn/hudson~svn/trunk/hudson/plugins/copy-to-slave</developerConnection>
+    </scm>
 </project>
