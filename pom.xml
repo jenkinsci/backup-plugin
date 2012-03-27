@@ -83,4 +83,11 @@
             <url>http://maven.jenkins-ci.org/content/repositories/releases/</url>
         </repository>
     </distributionManagement>
+
+    <repositories>
+      <repository>
+        <id>custom</id>
+        <url>file:///${basedir}/src/repository</url>
+      </repository>
+    </repositories>
 </project>
