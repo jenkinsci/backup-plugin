@@ -28,7 +28,6 @@ import java.io.File;
 
 import org.apache.commons.io.FileUtils;
 import org.codehaus.plexus.archiver.zip.ZipUnArchiver;
-import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -67,8 +66,6 @@ public class ZipArchiverTest {
 		unarchiver.setSourceFile(archiveFile);
 
 		unarchiver.setDestDirectory(targetDirectory);
-		unarchiver.enableLogging(new ConsoleLogger(ConsoleLogger.LEVEL_DEBUG,
-				"Logger"));
 		unarchiver.extract();
 
 		Assert.assertTrue(ArchiverTestUtil.compareDirectoryContent(new File(Thread
