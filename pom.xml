@@ -1,10 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.jvnet.hudson.plugins</groupId>
+        <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>1.375</version>
-        <relativePath>../pom.xml</relativePath>
+        <version>4.47</version>
     </parent>
 
     <groupId>org.jvnet.hudson.plugins</groupId>
@@ -14,6 +13,12 @@
     <url>http://wiki.jenkins-ci.org/display/JENKINS/Backup+Plugin</url>
     <description>Backups and restores Hudson/Jenkins files</description>
     <version>1.6.2-SNAPSHOT</version>
+
+    <properties>
+        <jenkins.version>2.332.4</jenkins.version>
+        <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
 
     <developers>
         <developer>
@@ -28,16 +33,31 @@
         </developer>
     </developers>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.jenkins.tools.bom</groupId>
+                <artifactId>bom-2.332.x</artifactId>
+                <version>1607.va_c1576527071</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.jenkins-ci</groupId>
+                <artifactId>symbol-annotation</artifactId>
+                <version>1.23</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>1.4</version>
         </dependency>
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
-            <version>2.4</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
@@ -68,23 +88,19 @@
             </plugin>
         </plugins>
     </build>
-  
+
     <!-- see http://groups.google.com/group/hudson-dev/browse_thread/thread/83e34c639eec470a for the rationale behind this -->
     <scm>
         <connection>scm:svn:https://guest@svn.jenkins-ci.org/trunk/hudson/plugins/backup/</connection>
         <developerConnection>scm:svn:https://svn.jenkins-ci.org/trunk/hudson/plugins/backup/</developerConnection>
         <url>https://hudson.dev.java.net/source/browse/hudson/trunk/hudson/plugins/backup</url>
     </scm>
-  
-    <!-- see https://wiki.jenkins-ci.org/display/JENKINS/Hosting+Plugins#HostingPlugins-PreparePOMforrelease -->
-    <distributionManagement>
-        <repository>
-            <id>java.net-m2-repository</id>
-            <url>http://maven.jenkins-ci.org/content/repositories/releases/</url>
-        </repository>
-    </distributionManagement>
 
     <repositories>
+      <repository>
+        <id>repo.jenkins-ci.org</id>
+        <url>https://repo.jenkins-ci.org/public/</url>
+      </repository>
       <repository>
         <id>custom</id>
         <url>file:///${basedir}/src/repository</url>
@@ -97,5 +113,4 @@
             <url>https://repo.jenkins-ci.org/public/</url>
         </pluginRepository>
     </pluginRepositories>
-</project>  
-
+</project>
