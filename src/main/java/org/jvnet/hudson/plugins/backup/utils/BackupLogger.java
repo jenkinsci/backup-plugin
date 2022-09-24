@@ -40,7 +40,7 @@ public class BackupLogger {
 	private boolean debug;
 
 	public BackupLogger(String logFileName, boolean debug) throws IOException {
-		logFile = new PrintWriter(logFileName);
+                logFile = new PrintWriter(logFileName, "UTF-8");
 		this.debug = debug;
 	}
 	
