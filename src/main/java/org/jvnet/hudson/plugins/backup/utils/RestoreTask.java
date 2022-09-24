@@ -83,7 +83,11 @@ public class RestoreTask extends BackupPluginTask {
                 return;
             }
         }
-        temporary_directory.mkdir();
+        if (!temporary_directory.mkdir()) {
+            logger.error("Unable to create temporary directory " + tempDirectoryPath);
+            finished = true;
+            return;
+        }
 
         File archive = new File(backupFileName);
 
