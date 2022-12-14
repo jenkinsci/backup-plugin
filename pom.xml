@@ -19,8 +19,7 @@
         <jenkins.version>2.332.4</jenkins.version>
         <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spotbugs.excludeFilterFile>${project.basedir}/src/spotbugs/spotbugs-excludes.xml</spotbugs.excludeFilterFile>
-    </properties>
+     </properties>
 
     <developers>
         <developer>
