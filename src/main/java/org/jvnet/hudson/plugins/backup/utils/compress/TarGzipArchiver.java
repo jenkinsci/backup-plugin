@@ -37,15 +37,7 @@ public class TarGzipArchiver extends AbstractArchiver implements Archiver {
 	public void init(File destination) throws ArchiverException {
 		archiver = new TarArchiver();
 		archiver.setDestFile(destination);
-
-		TarCompressionMethod compression = new TarCompressionMethod();
-		try {
-			compression.setValue("gzip");
-		} catch (org.codehaus.plexus.archiver.ArchiverException e) {
-			throw new RuntimeException("Unknown compression mode gzip");
-		}
-
-		archiver.setCompression(compression);
+		archiver.setCompression(TarCompressionMethod.gzip);
 	}
 
 	@Override

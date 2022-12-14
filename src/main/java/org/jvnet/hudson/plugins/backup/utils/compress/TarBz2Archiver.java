@@ -37,15 +37,7 @@ public class TarBz2Archiver extends AbstractArchiver implements Archiver {
 	public void init(File destination) throws ArchiverException {
 		archiver = new TarArchiver();
 		archiver.setDestFile(destination);
-
-		TarCompressionMethod compression = new TarCompressionMethod();
-		try {
-			compression.setValue("bzip2");
-		} catch (org.codehaus.plexus.archiver.ArchiverException e) {
-			throw new RuntimeException("Unknown compression mode bzip2");
-		}
-
-		archiver.setCompression(compression);
+		archiver.setCompression(TarCompressionMethod.bzip2);
 	}
 
 	@Override

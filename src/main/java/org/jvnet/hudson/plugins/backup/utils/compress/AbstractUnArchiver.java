@@ -30,7 +30,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
-import org.codehaus.plexus.logging.console.ConsoleLogger;
 
 public abstract class AbstractUnArchiver implements UnArchiver {
 	protected final static Logger LOGGER = Logger.getLogger(AbstractUnArchiver.class
@@ -54,7 +53,6 @@ public abstract class AbstractUnArchiver implements UnArchiver {
 			}
 		}
 		
-		unarchiver.enableLogging(new ConsoleLogger(org.codehaus.plexus.logging.Logger.LEVEL_INFO, "UnArchiver"));
 		unarchiver.setSourceFile(archive);
 		unarchiver.setDestDirectory(destDir);
 	

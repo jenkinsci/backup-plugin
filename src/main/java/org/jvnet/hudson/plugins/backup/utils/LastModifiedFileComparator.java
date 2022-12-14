@@ -37,9 +37,6 @@ public class LastModifiedFileComparator implements Comparator {
         if (! (o1 instanceof File && o2 instanceof File)) {
             throw new IllegalArgumentException("Parameters not File types");
         }
-        if (o1 == null || o2 == null) {
-            throw new IllegalArgumentException("One parameter is null");
-        }
         return (int) (((File) o2).lastModified() - ((File) o1).lastModified());
     }
 }
