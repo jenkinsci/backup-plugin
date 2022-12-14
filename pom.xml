@@ -11,7 +11,7 @@
     <artifactId>backup</artifactId>
     <packaging>hpi</packaging>
     <name>Backup plugin</name>
-    <url>http://wiki.jenkins-ci.org/display/JENKINS/Backup+Plugin</url>
+    <url>https://github.com/jenkinsci/backup-plugin</url>
     <description>Backup and restore Jenkins files</description>
     <version>1.6.2-SNAPSHOT</version>
 
